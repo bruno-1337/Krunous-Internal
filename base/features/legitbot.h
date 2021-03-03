@@ -25,8 +25,9 @@ public:
 	void SmoothAngleSet(QAngle dest, QAngle orig);
 	QAngle rcs_old_punch = { 0.0f, 0.0f, 0.0f };
 	void GetWeaponConfig(CBaseEntity* pLocal);
-	float fov;
+	int fov;
 	int smooth;
+	int weapontype;
 
 	
 

@@ -248,8 +248,9 @@ void T::LegitBot()
 
 	ImGui::Columns(2, nullptr, false);
 	{
-		ImGui::BeginChild(XorStr("legitbot.aimbot"), ImVec2(), true, ImGuiWindowFlags_MenuBar);
+		ImGui::BeginChild(XorStr("legitbot.aimbot"), ImVec2(0, 0), true, ImGuiWindowFlags_MenuBar);
 		{
+
 			if (ImGui::BeginMenuBar())
 			{
 				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
@@ -265,7 +266,6 @@ void T::LegitBot()
 					ImGui::MenuItem(XorStr("legs"), nullptr, &C::Get<bool>(Vars.bAimLegs));
 					ImGui::EndMenu();
 				}
-				
 
 				ImGui::EndMenuBar();
 
@@ -279,16 +279,11 @@ void T::LegitBot()
 			{
 				CBaseEntity* pLocal = I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetLocalPlayer());
 				CBaseCombatWeapon* pWeapon = pLocal->GetWeapon();
-
-				if (pWeapon == nullptr)
-					return;
-
 				short nDefinitionIndex = pWeapon->GetItemDefinitionIndex();
 				CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(nDefinitionIndex);
 
 				// check is weapon gun
-				if (pWeaponData == nullptr || !pWeaponData->IsGun())
-					return;
+				
 				switch (pWeaponData->nWeaponType)
 				{
 				
@@ -352,7 +347,7 @@ void T::LegitBot()
 					ImGui::MenuItem(XorStr("legs"), nullptr, &C::Get<bool>(Vars.bTriggerLegs));
 					ImGui::EndMenu();
 				}
-
+				
 				ImGui::EndMenuBar();
 			}
 
@@ -546,6 +541,9 @@ void T::Visuals()
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
 			ImGui::SliderFloat(XorStr("camera fov"), &C::Get<float>(Vars.flScreenCameraFOV), -89.f, 89.f, "%.1f\xC2\xB0");
 			ImGui::SliderFloat(XorStr("viewmodel fov"), &C::Get<float>(Vars.flScreenViewModelFOV), -90.f, 90.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("viewmodel X"), &C::Get<float>(Vars.flScreenViewModelX), -20.f, 20.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("viewmodel Y"), &C::Get<float>(Vars.flScreenViewModelY), -20.f, 20.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("viewmodel Z"), &C::Get<float>(Vars.flScreenViewModelZ), -20.f, 20.f, "%.1f\xC2\xB0");
 			ImGui::Separator();
 
 			ImGui::Checkbox(XorStr("hitmarker"), &C::Get<bool>(Vars.bScreenHitMarker));

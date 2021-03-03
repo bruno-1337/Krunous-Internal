@@ -165,30 +165,37 @@ void CLegitBot::GetWeaponConfig(CBaseEntity* pLocal)
 switch (pWeaponData->nWeaponType)
 {
 case WEAPONTYPE_PISTOL:
+	weapontype = 1;
 	fov = C::Get<int>(Vars.iPAimFov);
 	smooth = C::Get<int>(Vars.iPAimSmooth);
 	break;
 case WEAPONTYPE_SUBMACHINEGUN:
+	weapontype = 2;
 	fov = C::Get<int>(Vars.iSMGAimFov);
 	smooth = C::Get<int>(Vars.iSMGAimSmooth);
 	break;
 case WEAPONTYPE_RIFLE:
+	weapontype = 3;
 	fov = C::Get<int>(Vars.iRAimFov);
 	smooth = C::Get<int>(Vars.iRAimSmooth);
 	break;
 case WEAPONTYPE_SHOTGUN:
+	weapontype = 4;
 	fov = C::Get<int>(Vars.iSHAimFov);
 	smooth = C::Get<int>(Vars.iSHAimSmooth);
 	break;
 case WEAPONTYPE_SNIPER:
+	weapontype = 5;
 	fov = C::Get<int>(Vars.iSAimFov);
 	smooth = C::Get<int>(Vars.iSAimSmooth);
 	break;
 case WEAPONTYPE_MACHINEGUN:
+	weapontype = 6;
 	fov = C::Get<int>(Vars.iMAimFov);
 	smooth = C::Get<int>(Vars.iMAimSmooth);
 	break;
 default:
+	weapontype = 7;
 	fov = 0;
 	smooth = 0;
 	break;

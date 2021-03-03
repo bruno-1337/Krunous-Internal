@@ -166,6 +166,22 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	static auto oEndScene = DTR::EndScene.GetOriginal<decltype(&hkEndScene)>();
 	static void* pUsedAddress = nullptr;
 
+	static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
+	static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
+	static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
+
+	
+
+
+	viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
+	viewmodel_offset_x->SetValue(C::Get<float>(Vars.flScreenViewModelX));
+	viewmodel_offset_y->fnChangeCallbacks.Size() = NULL;
+	viewmodel_offset_y->SetValue(C::Get<float>(Vars.flScreenViewModelY));
+	viewmodel_offset_z->fnChangeCallbacks.Size() = NULL;
+	viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
+
+
+
 	SEH_START
 
 	if (pUsedAddress == nullptr)
@@ -702,6 +718,8 @@ float FASTCALL H::hkGetViewModelFOV(IClientModeShared* thisptr, int edx)
 
 	return oGetViewModelFOV(thisptr, edx);
 }
+
+
 
 int FASTCALL H::hkDoPostScreenEffects(IClientModeShared* thisptr, int edx, CViewSetup* pSetup)
 {

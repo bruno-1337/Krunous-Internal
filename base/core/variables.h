@@ -227,6 +227,9 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bScreen, false);
 	C_ADD_VARIABLE(float, flScreenCameraFOV, 0.f);
 	C_ADD_VARIABLE(float, flScreenViewModelFOV, 0.f);
+	C_ADD_VARIABLE(float, flScreenViewModelX, 0.f);
+	C_ADD_VARIABLE(float, flScreenViewModelY, 0.f);
+	C_ADD_VARIABLE(float, flScreenViewModelZ, 0.f);
 	C_ADD_VARIABLE(bool, bScreenHitMarker, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerDamage, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerSound, false);

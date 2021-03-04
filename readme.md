@@ -1,7 +1,7 @@
 # Krunous Internal
 
 ### :space_invader: menu
-![Menu](https://i.imgur.com/yoEf96z.png)
+![Menu](https://i.imgur.com/LVgds1w.png)
 
 #
 

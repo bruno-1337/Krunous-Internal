@@ -121,3 +121,16 @@ int* pSomePointer = *reinterpret_cast<int**>(pSomeAddress);
 3. [freetype font rasterizer](https://www.freetype.org/)
 4. [{fmt} formatting](https://github.com/fmtlib/fmt/)
 5. [minhook](https://github.com/TsudaKageyu/minhook/)
+
+### :balloon: oraçao da pallet
+
+oracao da pallet pai nosso que estais no cu do dainn
+santificado seja meu padrasto do pdrn
+venha nos a vosso sexo
+seja disparado varios gozo
+assim no gozo como no cu do dainn
+o gozo de cada dia nos dainn hoje
+perdoaime dos padrasto do pdrn
+assim como nos nao perdoamos o cu do dainn
+livraime dos biscoito
+amem 

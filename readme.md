@@ -108,7 +108,7 @@ int* pSomePointer = *reinterpret_cast<int**>(pSomeAddress);
 
 ### :question: faq
 **how do i open the menu?**
-- menu key is <kbd>HOME</kbd>
+- menu key is <kbd>INSERT</kbd>
 
 **how do i unload the cheat?**
 - panic key is <kbd>END</kbd>

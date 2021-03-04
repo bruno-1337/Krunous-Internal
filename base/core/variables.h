@@ -93,30 +93,37 @@ struct Variables_t
 
 	C_ADD_VARIABLE(int, iPAimFov, 0);//PISTOL
 	C_ADD_VARIABLE(int, iPAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bPOneShot, false);
 
 	C_ADD_VARIABLE(int, iRAimFov, 0);//RIFLE
 	C_ADD_VARIABLE(int, iRAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bROneShot, false);
 
 	C_ADD_VARIABLE(int, iSAimFov, 0);//SNIPER
 	C_ADD_VARIABLE(int, iSAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bSOneShot, false);
 
 	C_ADD_VARIABLE(int, iSHAimFov, 0);//SHOTGUN
 	C_ADD_VARIABLE(int, iSHAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bSHOneShot, false);
 
 	C_ADD_VARIABLE(int, iMAimFov, 0);//MACHINEGUN
 	C_ADD_VARIABLE(int, iMAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bMAOneShot, false);
 
 	C_ADD_VARIABLE(int, iSMGAimFov, 0);//SMG
 	C_ADD_VARIABLE(int, iSMGAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bSMGOneShot, false);
 	
 
-
+	C_ADD_VARIABLE(bool, bOneShot, false);
 	C_ADD_VARIABLE(bool, bAimHead, true);
 	C_ADD_VARIABLE(bool, bAimChest, true);
 	C_ADD_VARIABLE(bool, bAimStomach, true);
 	C_ADD_VARIABLE(bool, bAimArms, false);
 	C_ADD_VARIABLE(bool, bAimLegs, false);
 	C_ADD_VARIABLE(bool, bAimAutoWall, false);
+	C_ADD_VARIABLE(bool, iAimTeam, false);
 
 	// trigger
 	C_ADD_VARIABLE(bool, bTrigger, false);

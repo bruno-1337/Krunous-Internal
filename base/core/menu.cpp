@@ -290,30 +290,37 @@ void T::LegitBot()
 				case WEAPONTYPE_PISTOL:
 					ImGui::SliderInt(XorStr("Pistol Fov##legitbot"), &C::Get<int>(Vars.iPAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Pistol Smooth##legitbot"), &C::Get<int>(Vars.iPAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bPOneShot));
 					break;
 				case WEAPONTYPE_SUBMACHINEGUN:
 					ImGui::SliderInt(XorStr("SMG Fov##legitbot"), &C::Get<int>(Vars.iSMGAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("SMG Smooth##legitbot"), &C::Get<int>(Vars.iSMGAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSMGOneShot));
 					break;
 				case WEAPONTYPE_RIFLE:
 					ImGui::SliderInt(XorStr("Rifle Fov##legitbot"), &C::Get<int>(Vars.iRAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Rifle Smooth##legitbot"), &C::Get<int>(Vars.iRAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bROneShot));
 					break;
 				case WEAPONTYPE_SHOTGUN:
 					ImGui::SliderInt(XorStr("Shotgun Fov##legitbot"), &C::Get<int>(Vars.iSHAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Shotgun Smooth##legitbot"), &C::Get<int>(Vars.iSHAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSHOneShot));
 					break;
 				case WEAPONTYPE_SNIPER:
 					ImGui::SliderInt(XorStr("Sniper Fov##legitbot"), &C::Get<int>(Vars.iSAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Sniper Smooth##legitbot"), &C::Get<int>(Vars.iSAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSOneShot));
 					break;
 				case WEAPONTYPE_MACHINEGUN:
 					ImGui::SliderInt(XorStr("Machine Gun Fov##legitbot"), &C::Get<int>(Vars.iMAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Machine Gun Smooth##legitbot"), &C::Get<int>(Vars.iMAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bMAOneShot));
 					break;
 				default:
 					ImGui::SliderInt(XorStr("Fov##legitbot"), &C::Get<int>(Vars.iAimFov), 0, 360, "%d");
 					ImGui::SliderInt(XorStr("Smooth##legitbot"), &C::Get<int>(Vars.iAimSmooth), 0, 100, "%d");
+					ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bOneShot));
 					break;
 				}
 			}
@@ -324,6 +331,7 @@ void T::LegitBot()
 				
 			}
 			ImGui::Checkbox(XorStr("auto wall##legitbot"), &C::Get<bool>(Vars.bAimAutoWall));
+			ImGui::Checkbox(XorStr("Team##legitbot"), &C::Get<bool>(Vars.iAimTeam));
 			ImGui::PopStyleVar();
 			ImGui::EndChild();
 		}

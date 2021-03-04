@@ -22,11 +22,12 @@ public:
 	int m_Target;
 	float m_Best;
 	void RCS(CUserCmd* pCmd, CBaseEntity* pLocal);
-	void SmoothAngleSet(QAngle dest, QAngle orig);
+	void SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd);
 	QAngle rcs_old_punch = { 0.0f, 0.0f, 0.0f };
 	void GetWeaponConfig(CBaseEntity* pLocal);
 	int fov;
 	int smooth;
+	bool oneshot;
 	int weapontype;
 
 	

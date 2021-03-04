@@ -43,7 +43,7 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 	
 
 }
-void CLegitBot::SmoothAngleSet(QAngle dest, QAngle orig)
+void CLegitBot::SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd)
 {
 	QAngle vecDelta = dest;
 
@@ -55,7 +55,8 @@ void CLegitBot::SmoothAngleSet(QAngle dest, QAngle orig)
 
 	orig.Normalize();
 	orig.Clamp();
-	I::Engine->SetViewAngles(orig);
+	pCmd->angViewPoint = orig;
+	I::Engine->SetViewAngles(pCmd->angViewPoint);
 }
 
 void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
@@ -84,6 +85,10 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 	{
 		if (pLocal->GetShotsFired() > 1)
 		{
+			if (oneshot)
+			{
+				return;
+			}
 			QAngle aimPunch = pLocal->GetPunch();
 			EnemyAngle.x -= aimPunch.x * 2.0f;
 			EnemyAngle.y -= aimPunch.y * 2.0f;
@@ -91,13 +96,14 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 		if (smooth > 0)
 		{
-			SmoothAngleSet(EnemyAngle, CurrentAngle);
+			SmoothAngleSet(EnemyAngle, CurrentAngle, pCmd);
 		}
 		else
 		{
 			EnemyAngle.Normalize();
 			EnemyAngle.Clamp();
-			I::Engine->SetViewAngles(EnemyAngle);
+			pCmd->angViewPoint = EnemyAngle;
+			I::Engine->SetViewAngles(pCmd->angViewPoint);
 		}
 	}
 
@@ -120,6 +126,12 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 		if (pEntity == nullptr || !pEntity->IsPlayer() || pEntity->IsDormant() || !pEntity->IsAlive() || i == fLocal->GetIndex())
 			continue;
+
+		if (C::Get<bool>(Vars.iAimTeam))
+		{
+			if (!pEntity->IsEnemy(fLocal))
+				continue;
+		}
 
 		
 		auto Local_Pos = fLocal->GetEyePosition();
@@ -168,36 +180,43 @@ case WEAPONTYPE_PISTOL:
 	weapontype = 1;
 	fov = C::Get<int>(Vars.iPAimFov);
 	smooth = C::Get<int>(Vars.iPAimSmooth);
+	oneshot = C::Get<bool>(Vars.bPOneShot);
 	break;
 case WEAPONTYPE_SUBMACHINEGUN:
 	weapontype = 2;
 	fov = C::Get<int>(Vars.iSMGAimFov);
 	smooth = C::Get<int>(Vars.iSMGAimSmooth);
+	oneshot = C::Get<bool>(Vars.bSMGOneShot);
 	break;
 case WEAPONTYPE_RIFLE:
 	weapontype = 3;
 	fov = C::Get<int>(Vars.iRAimFov);
 	smooth = C::Get<int>(Vars.iRAimSmooth);
+	oneshot = C::Get<bool>(Vars.bROneShot);
 	break;
 case WEAPONTYPE_SHOTGUN:
 	weapontype = 4;
 	fov = C::Get<int>(Vars.iSHAimFov);
 	smooth = C::Get<int>(Vars.iSHAimSmooth);
+	oneshot = C::Get<bool>(Vars.bSHOneShot);
 	break;
 case WEAPONTYPE_SNIPER:
 	weapontype = 5;
 	fov = C::Get<int>(Vars.iSAimFov);
 	smooth = C::Get<int>(Vars.iSAimSmooth);
+	oneshot = C::Get<bool>(Vars.bSOneShot);
 	break;
 case WEAPONTYPE_MACHINEGUN:
 	weapontype = 6;
 	fov = C::Get<int>(Vars.iMAimFov);
 	smooth = C::Get<int>(Vars.iMAimSmooth);
+	oneshot = C::Get<bool>(Vars.bMAOneShot);
 	break;
 default:
 	weapontype = 7;
 	fov = 0;
 	smooth = 0;
+	oneshot = 0;
 	break;
 }
 }

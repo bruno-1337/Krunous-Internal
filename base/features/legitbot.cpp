@@ -11,6 +11,8 @@
 // used: backtracking
 #include "lagcompensation.h"
 
+#include "autowall.h"
+
 
 void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 {
@@ -38,6 +40,8 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 
 	
 	FindTarget(pLocal, pCmd);
+
+
 	GoToTarget(pCmd, pLocal);
 
 	
@@ -71,7 +75,31 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(m_Target);
 	auto Local_Pos = pLocal->GetEyePosition();
-	Vector EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+	Vector EnemyBonePos;
+	switch (Aim_Bone)
+	{
+	case 1:
+	{
+		EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+		break;
+	}
+	case 2:
+	{
+		EnemyBonePos = *pEntity->GetBonePosition(BONE_NECK);
+		break;
+	}
+	case 3:
+	{
+		EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_3);
+		break;
+	}
+	default:
+	{
+		EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+		break;
+	}
+	}
+	
 	auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 	auto CurrentAngle = pCmd->angViewPoint;
 
@@ -89,11 +117,11 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 			{
 				return;
 			}
+
 			QAngle aimPunch = pLocal->GetPunch();
 			EnemyAngle.x -= aimPunch.x * 2.0f;
 			EnemyAngle.y -= aimPunch.y * 2.0f;
 		}
-
 		if (smooth > 0)
 		{
 			SmoothAngleSet(EnemyAngle, CurrentAngle, pCmd);
@@ -135,9 +163,79 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 		
 		auto Local_Pos = fLocal->GetEyePosition();
-		Vector EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+		Vector EnemyBonePos;
+		switch (Aim_Bone)
+		{
+		case 1:
+		{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+			break;
+		}
+		case 2:
+		{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_NECK);
+			break;
+		}
+		case 3:
+		{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_3);
+			break;
+		}
+		default:
+		{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+			break;
+		}
+		}
+
 		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 		auto CurrentAngle = fCmd->angViewPoint;
+
+		if (C::Get<bool>(Vars.bAimAutoWall))
+		{
+			static CConVar* weapon_recoil_scale = I::ConVar->FindVar(XorStr("weapon_recoil_scale"));
+
+			if (weapon_recoil_scale == nullptr)
+				continue;
+
+			CBaseCombatWeapon* pWeapon = fLocal->GetWeapon();
+
+			if (pWeapon == nullptr)
+				continue;
+
+			short nDefinitionIndex = pWeapon->GetItemDefinitionIndex();
+			CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(nDefinitionIndex);
+			QAngle angView = EnemyAngle;
+			Vector vecStart, vecEnd, vecForward;
+			M::AngleVectors(angView, &vecForward);
+			vecStart = fLocal->GetEyePosition();
+			vecForward *= pWeaponData->flRange;
+			vecEnd = vecStart + vecForward;
+
+
+			Trace_t trace = { };
+			Ray_t ray(vecStart, vecEnd);
+			CTraceFilter filter(fLocal);
+			I::EngineTrace->TraceRay(ray, MASK_SHOT, &filter, &trace);
+			CBaseEntity* AEntity = trace.pHitEntity;
+			if ((C::Get<bool>(Vars.bAimHead) && trace.iHitGroup == HITGROUP_HEAD) ||
+				// chest
+				(C::Get<bool>(Vars.bAimChest) && trace.iHitGroup == HITGROUP_CHEST) ||
+				// stomach
+				(C::Get<bool>(Vars.bAimStomach) && trace.iHitGroup == HITGROUP_STOMACH) ||
+				// arms
+				(C::Get<bool>(Vars.bAimArms) && (trace.iHitGroup == HITGROUP_LEFTARM || trace.iHitGroup == HITGROUP_RIGHTARM)) ||
+				// legs
+				(C::Get<bool>(Vars.bAimLegs) && (trace.iHitGroup == HITGROUP_LEFTLEG || trace.iHitGroup == HITGROUP_RIGHTLEG)))
+			{
+				//nice
+			}
+			else continue;
+
+
+		}
+		
+
 		tmp = CalcFov(EnemyAngle, CurrentAngle);
 		if (tmp < m_Best)
 		{
@@ -181,38 +279,45 @@ case WEAPONTYPE_PISTOL:
 	fov = C::Get<int>(Vars.iPAimFov);
 	smooth = C::Get<int>(Vars.iPAimSmooth);
 	oneshot = C::Get<bool>(Vars.bPOneShot);
+	Aim_Bone = C::Get<int>(Vars.iPBone);
 	break;
 case WEAPONTYPE_SUBMACHINEGUN:
 	weapontype = 2;
 	fov = C::Get<int>(Vars.iSMGAimFov);
 	smooth = C::Get<int>(Vars.iSMGAimSmooth);
 	oneshot = C::Get<bool>(Vars.bSMGOneShot);
+	Aim_Bone = C::Get<int>(Vars.iSMGBone);
 	break;
 case WEAPONTYPE_RIFLE:
 	weapontype = 3;
 	fov = C::Get<int>(Vars.iRAimFov);
 	smooth = C::Get<int>(Vars.iRAimSmooth);
 	oneshot = C::Get<bool>(Vars.bROneShot);
+	Aim_Bone = C::Get<int>(Vars.iRBone);
 	break;
 case WEAPONTYPE_SHOTGUN:
 	weapontype = 4;
 	fov = C::Get<int>(Vars.iSHAimFov);
 	smooth = C::Get<int>(Vars.iSHAimSmooth);
 	oneshot = C::Get<bool>(Vars.bSHOneShot);
+	Aim_Bone = C::Get<int>(Vars.iSHBone);
 	break;
 case WEAPONTYPE_SNIPER:
 	weapontype = 5;
 	fov = C::Get<int>(Vars.iSAimFov);
 	smooth = C::Get<int>(Vars.iSAimSmooth);
 	oneshot = C::Get<bool>(Vars.bSOneShot);
+	Aim_Bone = C::Get<int>(Vars.iSBone);
 	break;
 case WEAPONTYPE_MACHINEGUN:
 	weapontype = 6;
 	fov = C::Get<int>(Vars.iMAimFov);
 	smooth = C::Get<int>(Vars.iMAimSmooth);
 	oneshot = C::Get<bool>(Vars.bMAOneShot);
+	Aim_Bone = C::Get<int>(Vars.iMABone);
 	break;
 default:
+	Aim_Bone = 7;
 	weapontype = 7;
 	fov = 0;
 	smooth = 0;
@@ -220,3 +325,4 @@ default:
 	break;
 }
 }
+

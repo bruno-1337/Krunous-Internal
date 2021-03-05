@@ -166,19 +166,15 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	static auto oEndScene = DTR::EndScene.GetOriginal<decltype(&hkEndScene)>();
 	static void* pUsedAddress = nullptr;
 
-	static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
-	static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
-	static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
-
 	
 
+	static auto nick = I::ConVar->FindVar(XorStr("name"));
+	nick->fnChangeCallbacks.Size() = NULL;
 
-	viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_x->SetValue(C::Get<float>(Vars.flScreenViewModelX));
-	viewmodel_offset_y->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_y->SetValue(C::Get<float>(Vars.flScreenViewModelY));
-	viewmodel_offset_z->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
+
+
+
+	
 
 
 

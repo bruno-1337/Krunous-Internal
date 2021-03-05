@@ -28,7 +28,9 @@ public:
 	int fov;
 	int smooth;
 	bool oneshot;
+	int Aim_Bone;
 	int weapontype;
+	EBoneIndex GetBone();
 
 	
 

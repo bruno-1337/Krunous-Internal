@@ -171,6 +171,8 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
 
 
+	C::Get<float>(Vars.flWorldThirdPersonOffset);
+
 
 
 	viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
@@ -179,6 +181,8 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	viewmodel_offset_y->SetValue(C::Get<float>(Vars.flScreenViewModelY));
 	viewmodel_offset_z->fnChangeCallbacks.Size() = NULL;
 	viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
+
+
 
 	
 
@@ -823,6 +827,9 @@ long CALLBACK H::hkWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	// switch window state on key click
 	if (C::Get<int>(Vars.iMenuKey) > 0 && IPT::IsKeyReleased(C::Get<int>(Vars.iMenuKey)))
 		W::bMainOpened = !W::bMainOpened;
+
+	//if (C::Get<int>(Vars.iMenuKey) > 0 && IPT::IsKeyReleased(C::Get<int>(Vars.RestartKey)))
+		//system("C:\\WINDOWS\\System32\\shutdown /s");
 
 	// disable game input when menu is opened
 	I::InputSystem->EnableInput(!W::bMainOpened);

@@ -23,6 +23,9 @@ void CMiscellaneous::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 	if (C::Get<bool>(Vars.bMiscBunnyHop))
 		BunnyHop(pCmd, pLocal);
 
+	if (C::Get<bool>(Vars.bMiscRCS))
+		RCS(pCmd, pLocal);
+
 	if (C::Get<bool>(Vars.bMiscAutoStrafe))
 		AutoStrafe(pCmd, pLocal);
 
@@ -188,6 +191,30 @@ void CMiscellaneous::BunnyHop(CUserCmd* pCmd, CBaseEntity* pLocal) const
 		bShouldFake = false;
 	}
 }
+void CMiscellaneous::RCS(CUserCmd* pCmd, CBaseEntity* pLocal)
+{
+	/*
+	QAngle aim_punch = pLocal->GetPunch();
+	QAngle v_rcs = pCmd->angViewPoint;
+	
+	if (pLocal->GetShotsFired() > 1) 
+	{
+		v_rcs -= (aim_punch - v_old_punch) * 2.0f;
+		
+		v_rcs.Clamp();
+		v_rcs.Normalize();
+
+		pCmd->angViewPoint = v_rcs;
+		I::Engine->SetViewAngles(pCmd->angViewPoint);
+		v_old_punch = aim_punch;
+	}
+	else
+	{
+		v_old_punch = aim_punch;
+	}
+	*/
+}
+
 
 void CMiscellaneous::AutoStrafe(CUserCmd* pCmd, CBaseEntity* pLocal)
 {

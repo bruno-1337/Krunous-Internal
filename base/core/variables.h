@@ -112,6 +112,21 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bSHOneShot, false);
 	C_ADD_VARIABLE(int, iSHBone, 1);
 
+	C_ADD_VARIABLE(int, iAWPAimFov, 0);//AWP
+	C_ADD_VARIABLE(int, iAWPAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bAWPOneShot, false);
+	C_ADD_VARIABLE(int, iAWPBone, 1);
+
+	C_ADD_VARIABLE(int, iSCOUTAimFov, 0);//SCOUT
+	C_ADD_VARIABLE(int, iSCOUTAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bSCOUTOneShot, false);
+	C_ADD_VARIABLE(int, iSCOUTBone, 1);
+
+	C_ADD_VARIABLE(int, iAUTOAimFov, 0);//AUTO
+	C_ADD_VARIABLE(int, iAUTOAimSmooth, 0);
+	C_ADD_VARIABLE(bool, bAUTOOneShot, false);
+	C_ADD_VARIABLE(int, iAUTOBone, 1);
+
 	C_ADD_VARIABLE(int, iMAimFov, 0);//MACHINEGUN
 	C_ADD_VARIABLE(int, iMAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bMAOneShot, false);
@@ -243,9 +258,9 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bScreen, false);
 	C_ADD_VARIABLE(float, flScreenCameraFOV, 0.f);
 	C_ADD_VARIABLE(float, flScreenViewModelFOV, 0.f);
-	C_ADD_VARIABLE(float, flScreenViewModelX, 0.f);
-	C_ADD_VARIABLE(float, flScreenViewModelY, 0.f);
-	C_ADD_VARIABLE(float, flScreenViewModelZ, 0.f);
+	C_ADD_VARIABLE(float, flScreenViewModelX, 1.f);
+	C_ADD_VARIABLE(float, flScreenViewModelY, 1.f);
+	C_ADD_VARIABLE(float, flScreenViewModelZ, -1.f);
 	C_ADD_VARIABLE(bool, bScreenHitMarker, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerDamage, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerSound, false);
@@ -261,6 +276,8 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bMiscBunnyHop, false);
 	C_ADD_VARIABLE(int, iMiscBunnyHopChance, 100);
 	C_ADD_VARIABLE(bool, bMiscAutoStrafe, false);
+	C_ADD_VARIABLE(bool, bMiscRCS, false);
+	
 
 	C_ADD_VARIABLE(bool, bMiscFakeLag, false);
 	C_ADD_VARIABLE(bool, bMiscAutoAccept, false);
@@ -280,6 +297,7 @@ struct Variables_t
 
 	#pragma region variables_menu
 	C_ADD_VARIABLE(int, iMenuKey, VK_INSERT);
+	C_ADD_VARIABLE(int, RestartKey, VK_HOME);
 	C_ADD_VARIABLE(int, iPanicKey, VK_END);
 	#pragma endregion
 };

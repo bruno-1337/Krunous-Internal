@@ -113,15 +113,13 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 	{
 		if (pLocal->GetShotsFired() > 1)
 		{
-			if (oneshot)
-			{
-				return;
-			}
 
 			QAngle aimPunch = pLocal->GetPunch();
 			EnemyAngle.x -= aimPunch.x * 2.0f;
 			EnemyAngle.y -= aimPunch.y * 2.0f;
 		}
+		if (pLocal->GetShotsFired() >= 1 && oneshot == 1)
+			return;
 		if (smooth > 0)
 		{
 			SmoothAngleSet(EnemyAngle, CurrentAngle, pCmd);
@@ -157,7 +155,7 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 		if (C::Get<bool>(Vars.iAimTeam))
 		{
-			if (!pEntity->IsEnemy(fLocal))
+			if (!fLocal->IsEnemy(pEntity))
 				continue;
 		}
 
@@ -190,6 +188,13 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 		auto CurrentAngle = fCmd->angViewPoint;
+		if (fLocal->GetShotsFired() > 1)
+		{
+
+			QAngle aimPunch = fLocal->GetPunch();
+			EnemyAngle.x -= aimPunch.x * 2.0f;
+			EnemyAngle.y -= aimPunch.y * 2.0f;
+		}
 
 		if (C::Get<bool>(Vars.bAimAutoWall))
 		{
@@ -303,11 +308,45 @@ case WEAPONTYPE_SHOTGUN:
 	Aim_Bone = C::Get<int>(Vars.iSHBone);
 	break;
 case WEAPONTYPE_SNIPER:
-	weapontype = 5;
-	fov = C::Get<int>(Vars.iSAimFov);
-	smooth = C::Get<int>(Vars.iSAimSmooth);
-	oneshot = C::Get<bool>(Vars.bSOneShot);
-	Aim_Bone = C::Get<int>(Vars.iSBone);
+	switch (nDefinitionIndex)
+	{
+	case 9:
+	{
+		weapontype = 5;
+		fov = C::Get<int>(Vars.iAWPAimFov);
+		smooth = C::Get<int>(Vars.iAWPAimSmooth);
+		oneshot = C::Get<bool>(Vars.bAWPOneShot);
+		Aim_Bone = C::Get<int>(Vars.iAWPBone);
+		break;
+	}
+	case 40:
+	{
+		weapontype = 5;
+		fov = C::Get<int>(Vars.iSCOUTAimFov);
+		smooth = C::Get<int>(Vars.iSCOUTAimSmooth);
+		oneshot = C::Get<bool>(Vars.bSCOUTOneShot);
+		Aim_Bone = C::Get<int>(Vars.iSCOUTBone);
+		break;
+	}
+	case (11 || 38):
+	{
+		weapontype = 5;
+		fov = C::Get<int>(Vars.iAUTOAimFov);
+		smooth = C::Get<int>(Vars.iAUTOAimSmooth);
+		oneshot = C::Get<bool>(Vars.bAUTOOneShot);
+		Aim_Bone = C::Get<int>(Vars.iAUTOBone);
+		break;
+	}
+	default:
+	{
+		weapontype = 5;
+		fov = C::Get<int>(Vars.iSAimFov);
+		smooth = C::Get<int>(Vars.iSAimSmooth);
+		oneshot = C::Get<bool>(Vars.bSOneShot);
+		Aim_Bone = C::Get<int>(Vars.iSBone);
+		break;
+	}
+	}
 	break;
 case WEAPONTYPE_MACHINEGUN:
 	weapontype = 6;
@@ -321,7 +360,7 @@ default:
 	weapontype = 7;
 	fov = 0;
 	smooth = 0;
-	oneshot = 0;
+	oneshot = 1;
 	break;
 }
 }

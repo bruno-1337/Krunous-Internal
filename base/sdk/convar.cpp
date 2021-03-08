@@ -47,7 +47,7 @@ void CSpoofedConVar::Spoof()
 		iOriginalFlags = pOriginalCVar->nFlags;
 		strcpy(szOriginalName, pOriginalCVar->szName);
 		strcpy(szOriginalValue, pOriginalCVar->szDefaultValue);
-		sprintf_s(szDummyName, 128U, XorStr("qo0_%s"), szOriginalName);
+		sprintf_s(szDummyName, 128U, XorStr("EsTruPo_%s"), szOriginalName);
 
 		// create temporary convar
 		pDummyCVar = static_cast<CConVar*>(malloc(sizeof(CConVar)));

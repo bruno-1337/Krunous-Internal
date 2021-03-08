@@ -231,3 +231,5 @@ void CMiscellaneous::AutoStrafe(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	pCmd->flSideMove = pCmd->sMouseDeltaX < 0 ? -cl_sidespeed->GetFloat() : cl_sidespeed->GetFloat();
 }
+
+

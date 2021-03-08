@@ -13,7 +13,7 @@
 #pragma region imgui_extended
 /*
  * what is changed in imgui framework files (currently used imgui version is v1.75):
- * changed things can be found with "modified by qo0" commentary
+ * changed things can be found with "modified by EsTruPo" commentary
  *
  1	changed type of imgui dx stateblock creation to fix in-game artefacts and create additional shader to compensate it
  *
@@ -191,7 +191,7 @@ bool ImGui::HotKey(const char* szLabel, int* pValue)
 	char chBuffer[64] = { };
 	sprintf_s(chBuffer, sizeof(chBuffer), XorStr("[ %s ]"), *pValue != 0 && g.ActiveId != nIndex ? arrKeyNames.at(*pValue) : g.ActiveId == nIndex ? XorStr("press") : XorStr("none"));
 
-	// modified by qo0
+	// modified by EsTruPo
 	PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
 	pWindow->DrawList->AddText(ImVec2(rectFrame.Max.x - CalcTextSize(chBuffer).x, rectTotal.Min.y + style.FramePadding.y), GetColorU32(g.ActiveId == nIndex ? ImGuiCol_Text : ImGuiCol_TextDisabled), chBuffer);
 

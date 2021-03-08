@@ -1,7 +1,7 @@
 #pragma once
 
 //      credits: Sergey Fursa	    //
-//        also known as qo0         //
+//        also known as EsTruPo         //
 //                       ____       //
 //       ______  ____   / __ \      //
 //      / __  / / __ \ / / / /      //

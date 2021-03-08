@@ -431,7 +431,7 @@ public:
 	N_ADD_VARIABLE(int, GetFlags, "CBasePlayer->m_fFlags");
 	N_ADD_PVARIABLE(int, GetObserverMode, "CBasePlayer->m_iObserverMode");
 	N_ADD_VARIABLE(CBaseHandle, GetObserverTargetHandle, "CBasePlayer->m_hObserverTarget");
-	N_ADD_VARIABLE(CBaseHandle, GetViewModelHandle, "CBasePlayer->m_hViewModel[0]");
+	N_ADD_VARIABLE(CBaseHandle , GetViewModelHandle, "CBasePlayer->m_hViewModel[0]");
 	N_ADD_PVARIABLE(const char, GetLastPlace, "CBasePlayer->m_szLastPlaceName");
 
 	N_ADD_DATAFIELD(int, GetEFlags, this->GetPredictionDescMap(), "m_iEFlags");
@@ -482,6 +482,11 @@ public:
 	N_ADD_VARIABLE(int, GetSurvivalTeam, "CCSPlayer->m_nSurvivalTeam");
 	N_ADD_VARIABLE_OFFSET(int, IsUsedNewAnimState, "CCSPlayer->m_flLastExoJumpTime", 0x8);
 	#pragma endregion
+
+#pragma region DT_CSRagdoll
+	N_ADD_VARIABLE(Vector, m_vecForce, "CCSRagdoll->m_vecForce");
+	N_ADD_VARIABLE(Vector, m_vecRagdollVelocity, "CCSRagdoll->m_vecRagdollVelocity");
+#pragma endregion
 
 	#pragma region DT_BaseEntity
 	N_ADD_VARIABLE(float, GetAnimationTime, "CBaseEntity->m_flAnimTime");

@@ -264,6 +264,9 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bScreenHitMarker, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerDamage, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerSound, false);
+	C_ADD_VARIABLE(bool, bQuake, false);
+	C_ADD_VARIABLE(int, iRagdollGravity, 2);
+	C_ADD_VARIABLE(bool, bRagdollGravity, false);
 	C_ADD_VARIABLE(float, flScreenHitMarkerTime, 1.0f);
 	C_ADD_VARIABLE(int, iScreenHitMarkerGap, 5);
 	C_ADD_VARIABLE(int, iScreenHitMarkerLenght, 10);
@@ -286,6 +289,10 @@ struct Variables_t
 
 	//Config
 	C_ADD_VARIABLE(bool, bMiscWeaponConfig, false);
+
+	//SkinChanger
+	C_ADD_VARIABLE(bool, bSkinChanger, false);
+	C_ADD_VARIABLE(int, iSkinKnife, 1);
 
 	// exploits
 	C_ADD_VARIABLE(bool, bMiscPingSpike, false);

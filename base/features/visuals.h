@@ -50,16 +50,16 @@ public:
 		 */
 		arrMaterials =
 		{
-			std::make_pair(CreateMaterial(XorStr("qo0_players"), XorStr("VertexLitGeneric")),
-			CreateMaterial(XorStr("qo0_players_flat"), XorStr("UnlitGeneric"))),
+			std::make_pair(CreateMaterial(XorStr("EsTruPo_players"), XorStr("VertexLitGeneric")),
+			CreateMaterial(XorStr("EsTruPo_players_flat"), XorStr("UnlitGeneric"))),
 
-			std::make_pair(CreateMaterial(XorStr("qo0_viewmodel"), XorStr("VertexLitGeneric")),
-			CreateMaterial(XorStr("qo0_viewmodel_flat"), XorStr("UnlitGeneric"))),
+			std::make_pair(CreateMaterial(XorStr("EsTruPo_viewmodel"), XorStr("VertexLitGeneric")),
+			CreateMaterial(XorStr("EsTruPo_viewmodel_flat"), XorStr("UnlitGeneric"))),
 
-			std::make_pair(CreateMaterial(XorStr("qo0_reflective"), XorStr("VertexLitGeneric"), XorStr("vgui/white"), XorStr("env_cubemap")),
-			CreateMaterial(XorStr("qo0_glow"), XorStr("VertexLitGeneric"), XorStr("vgui/white"), XorStr("models/effects/cube_white"))),
+			std::make_pair(CreateMaterial(XorStr("EsTruPo_reflective"), XorStr("VertexLitGeneric"), XorStr("vgui/white"), XorStr("env_cubemap")),
+			CreateMaterial(XorStr("EsTruPo_glow"), XorStr("VertexLitGeneric"), XorStr("vgui/white"), XorStr("models/effects/cube_white"))),
 
-			std::make_pair(CreateMaterial(XorStr("qo0_scroll"), XorStr("VertexLitGeneric"), XorStr("dev/screenhighlight_pulse"), "", false, false, szScrollProxies),
+			std::make_pair(CreateMaterial(XorStr("EsTruPo_scroll"), XorStr("VertexLitGeneric"), XorStr("dev/screenhighlight_pulse"), "", false, false, szScrollProxies),
 			I::MaterialSystem->FindMaterial(XorStr("models/inventory_items/hydra_crystal/hydra_crystal_detail"), TEXTURE_GROUP_OTHER))
 		};
 
@@ -139,6 +139,7 @@ private:
 	void AmmoBar(CBaseEntity* pEntity, CBaseCombatWeapon* pWeapon, Context_t& ctx, const Color& colPrimary, const Color& colBackground, const Color& colOutline);
 	/* draw horizontal line with flashed duration-based width */
 	void FlashBar(CBaseEntity* pEntity, Context_t& ctx, const Color& colPrimary, const Color& colBackground, const Color& colOutline);
+	int kills; int headshots; char* _soundFileName;
 
 	// Values
 	/* saved hitmarker info's */

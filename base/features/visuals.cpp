@@ -1,6 +1,6 @@
 // used: std::call_once
 #include <mutex>
-
+#pragma comment(lib, "winmm.lib")
 #include "visuals.h"
 // used: camera origin global variable
 #include "../global.h"
@@ -16,6 +16,8 @@
 #include "../utilities/math.h"
 // used: get weapon icon
 #include "../utilities.h"
+
+#include <Windows.h>
 
 // @note: avoid store imcolor, store either u32 of imvec4
 void CVisuals::Store()
@@ -292,6 +294,64 @@ void CVisuals::Event(IGameEvent* pEvent, const FNV1A_t uNameHash)
 		return;
 
 	const float flServerTime = TICKS_TO_TIME(pLocal->GetTickBase());
+
+	if (uNameHash == FNV1A::HashConst("round_freeze_end"))
+	{
+		kills = 0;
+		headshots = 0;
+	}
+
+	if (C::Get<bool>(Vars.bQuake) && uNameHash == FNV1A::HashConst("player_death"))
+	{
+		CBaseEntity* pAttacker = I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetPlayerForUserID(pEvent->GetInt(XorStr("attacker"))));
+
+		if (pAttacker == pLocal)
+		{
+			CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetPlayerForUserID(pEvent->GetInt(XorStr("userid"))));
+
+			if (pEntity != nullptr && pEntity != pLocal)
+			{
+				kills++;
+				// play hit sound
+				CBaseCombatWeapon* pWeapon = pLocal->GetWeapon();
+				short nDefinitionIndex = pWeapon->GetItemDefinitionIndex();
+				CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(nDefinitionIndex);
+				_soundFileName = NULL;
+
+				if (pWeaponData->nWeaponType == WEAPONTYPE_KNIFE)
+				{
+					_soundFileName = "csgo\\sound\\faca.wav";
+				}
+				if (pEvent->GetBool(XorStr("headshot")))
+				{
+					_soundFileName = "csgo\\sound\\headshot.wav";
+				}
+				switch (kills)
+				{
+				case 2:
+					_soundFileName = "csgo\\sound\\doublekill.wav";
+					break;
+				case 3:
+					_soundFileName = "csgo\\sound\\triplekill.wav";
+					break;
+				case 4:
+					_soundFileName = "csgo\\sound\\unstoppable.wav";
+					break;
+				case 5:
+					_soundFileName = "csgo\\sound\\monsterkill.wav";
+					break;
+				default:
+					break;
+
+
+				}
+				if (_soundFileName != NULL)
+				{
+					PlaySoundA(_soundFileName, NULL, SND_ASYNC);
+				}
+			}
+		}
+	}
 
 	// get hitmarker info
 	if (C::Get<bool>(Vars.bScreen) && C::Get<bool>(Vars.bScreenHitMarker) && uNameHash == FNV1A::HashConst("player_hurt"))

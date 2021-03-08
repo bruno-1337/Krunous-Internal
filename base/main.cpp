@@ -37,14 +37,14 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 
 		#ifdef DEBUG_CONSOLE
 		// console logging
-		if (!L::Attach(XorStr("qo0's base developer-mode")))
+		if (!L::Attach(XorStr("EsTruPo developer-mode")))
 			throw std::runtime_error(XorStr("failed to attach console"));
 
 		L::Print(XorStr("console opened"));
 		#else
 		// file logging
 		// @note: use std::ios::app instead std::ios::trunc to not clear every time
-		L::ofsFile.open(C::GetWorkingPath().append(XorStr("qo0base.log")), std::ios::out | std::ios::trunc);
+		L::ofsFile.open(C::GetWorkingPath().append(XorStr("EsTruPo.log")), std::ios::out | std::ios::trunc);
 		#endif
 
 		// capture interfaces from game/steam (not always) modules
@@ -67,7 +67,7 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		 * fill networkable variables map
 		 * dump received netvars to the file
 		 */
-		if (!CNetvarManager::Get().Setup(XorStr("netvars.qo0")))
+		if (!CNetvarManager::Get().Setup(XorStr("netvars.EsTruPo")))
 			throw std::runtime_error(XorStr("failed to initialize netvars"));
 
 		L::Print(fmt::format(XorStr("found [{:d}] props in [{:d}] tables"), CNetvarManager::Get().iStoredProps, CNetvarManager::Get().iStoredTables));
@@ -92,7 +92,8 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 
 		// start tracking specified events from vector
 		// @note: all events list: https://wiki.alliedmods.net/Counter-Strike:_Global_Offensive_Events
-		U::EventListener.Setup({ XorStr("player_hurt"), XorStr("round_prestart"), XorStr("round_freeze_end") });
+		U::EventListener.Setup({ XorStr("player_hurt"), XorStr("round_prestart"), XorStr("round_freeze_end"), XorStr("player_death"), XorStr("round_end") });
+
 		L::Print(XorStr("events registered"));
 
 		// add our functionality in client functions
@@ -108,7 +109,7 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		L::Print(XorStr("proxies applied"));
 
 		// setup values to save/load cheat variables in/from files and load default configuration
-		if (!C::Setup(XorStr("default.qo0")))
+		if (!C::Setup(XorStr("default.EsTruPo")))
 		{
 			// this error is not critical, only show that
 			L::PushConsoleColor(FOREGROUND_RED);

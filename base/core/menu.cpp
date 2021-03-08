@@ -141,11 +141,10 @@ void W::MainWindow(IDirect3DDevice9* pDevice)
 			// add tabs
 			static std::array<CTab, 4U> const arrTabs =
 			{
-				CTab{ "rage", &T::RageBot },
 				CTab{ "Aimbot", &T::LegitBot },
 				CTab{ "visuals", &T::Visuals },
-				CTab{ "miscellaneous", &T::Miscellaneous }
-				//CTab{ "skinchanger", &T::SkinChanger }
+				CTab{ "miscellaneous", &T::Miscellaneous },
+				CTab{ "skinchanger", &T::SkinChanger }
 			};
 
 			T::Render<arrTabs.size()>(XorStr("main_tabs"), arrTabs, &iMainTab, style.Colors[ImGuiCol_TabActive]);
@@ -191,54 +190,6 @@ void T::Render(const char* szTabBar, const std::array<CTab, S> arrTabs, int* nCu
 #pragma endregion
 
 #pragma region menu_tabs_main
-void T::RageBot()
-{
-	ImGuiStyle& style = ImGui::GetStyle();
-
-	ImGui::Columns(2, nullptr, false);
-	{
-		ImGui::BeginChild(XorStr("ragebot.aimbot"), ImVec2(), true, ImGuiWindowFlags_MenuBar);
-		{
-			if (ImGui::BeginMenuBar())
-			{
-				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
-				ImGui::Selectable(XorStr("aimbot##ragebot"), &C::Get<bool>(Vars.bRage), ImGuiSelectableFlags_None, ImVec2(30, 0));
-				ImGui::PopStyleVar();
-				ImGui::EndMenuBar();
-			}
-
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-
-			ImGui::PopStyleVar();
-
-			ImGui::EndChild();
-		}
-	}
-	ImGui::NextColumn();
-	{
-		ImGui::BeginChild(XorStr("ragebot.antiaim"), ImVec2(), true, ImGuiWindowFlags_MenuBar);
-		{
-			if (ImGui::BeginMenuBar())
-			{
-				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
-				ImGui::Selectable(XorStr("anti-aim"), &C::Get<bool>(Vars.bAntiAim), ImGuiSelectableFlags_None, ImVec2(40, 0));
-				ImGui::PopStyleVar();
-				ImGui::EndMenuBar();
-			}
-
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-			ImGui::Combo(XorStr("pitch"), &C::Get<int>(Vars.iAntiAimPitch), XorStr("none\0up\0down\0zero (untrusted)\0\0"));
-			ImGui::Combo(XorStr("yaw"), &C::Get<int>(Vars.iAntiAimYaw), XorStr("none\0desync\0\0"));
-
-			if (C::Get<int>(Vars.iAntiAimYaw) == (int)EAntiAimYawType::DESYNC)
-				ImGui::HotKey(XorStr("desync switch"), &C::Get<int>(Vars.iAntiAimDesyncKey));
-			ImGui::PopStyleVar();
-
-			ImGui::EndChild();
-		}
-	}
-	ImGui::Columns(1);
-}
 
 
 
@@ -607,6 +558,9 @@ void T::Visuals()
 			ImGui::Checkbox(XorStr("hitmarker"), &C::Get<bool>(Vars.bScreenHitMarker));
 			ImGui::Checkbox(XorStr("damage"), &C::Get<bool>(Vars.bScreenHitMarkerDamage));
 			ImGui::Checkbox(XorStr("sound"), &C::Get<bool>(Vars.bScreenHitMarkerSound));
+			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
+			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
+			ImGui::SliderInt(XorStr("Ragdoll G Multiplier"), &C::Get<int>(Vars.iRagdollGravity), -10, 10, "%d G");
 			ImGui::SliderFloat(XorStr("time"), &C::Get<float>(Vars.flScreenHitMarkerTime), 0.5f, 5.f, "%.1fsec");
 			ImGui::SliderInt(XorStr("gap"), &C::Get<int>(Vars.iScreenHitMarkerGap), 1, 20, "%d pixels");
 			ImGui::SliderInt(XorStr("length"), &C::Get<int>(Vars.iScreenHitMarkerLenght), 1, 20, "%d pixels");
@@ -801,14 +755,27 @@ void T::Miscellaneous()
 
 void T::SkinChanger()
 {
-	ImGui::BeginChild(XorStr("skins"), ImVec2(), true);
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	ImGui::Columns(1, nullptr, false);
 	{
-		for (const auto& item : mapItemList) //first - itemdefindex, second - skin item struct
+		ImGui::BeginChild(XorStr("skins"), ImVec2(), true);
 		{
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::TextUnformatted(XorStr("Knife Changer"));
+				ImGui::EndMenuBar();
+			}
+			ImGui::Checkbox(XorStr("Knife Changer"), &C::Get<bool>(Vars.bSkinChanger));
+			ImGui::SliderInt(XorStr("Knife"), &C::Get<int>(Vars.iSkinKnife), 0, 14, "%d");
 
+			for (const auto& item : mapItemList) //first - itemdefindex, second - skin item struct
+			{
+
+			}
+
+			ImGui::EndChild();
 		}
-
-		ImGui::EndChild();
 	}
 }
 #pragma endregion

@@ -158,7 +158,6 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 			if (!fLocal->IsEnemy(pEntity))
 				continue;
 		}
-
 		
 		auto Local_Pos = fLocal->GetEyePosition();
 		Vector EnemyBonePos;
@@ -252,6 +251,8 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 float CLegitBot::CalcFov(QAngle angle, QAngle playerAngle)
 {
+
+
 	float fov = sqrt(pow(angle.x - playerAngle.x, 2) + pow(angle.y - playerAngle.y, 2));
 	if (fov > 180)
 	{

@@ -28,6 +28,7 @@ private:
 	/* automatic jump when steps on the ground */
 	void BunnyHop(CUserCmd* pCmd, CBaseEntity* pLocal) const;
 	void RCS(CUserCmd* pCmd, CBaseEntity* pLocal);
+	void Ragdoll(CUserCmd* pCmd, CBaseEntity* pLocal);
 	QAngle v_old_punch;
 	/* strafes on optimal sides for maximum speed in air */
 	void AutoStrafe(CUserCmd* pCmd, CBaseEntity* pLocal);

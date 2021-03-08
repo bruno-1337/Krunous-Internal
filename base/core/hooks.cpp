@@ -166,21 +166,29 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	static auto oEndScene = DTR::EndScene.GetOriginal<decltype(&hkEndScene)>();
 	static void* pUsedAddress = nullptr;
 
-	static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
-	static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
-	static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
+
+		static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
+		static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
+		static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
+		
+
+
+		viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
+		viewmodel_offset_x->SetValue(C::Get<float>(Vars.flScreenViewModelX));
+		viewmodel_offset_y->fnChangeCallbacks.Size() = NULL;
+		viewmodel_offset_y->SetValue(C::Get<float>(Vars.flScreenViewModelY));
+		viewmodel_offset_z->fnChangeCallbacks.Size() = NULL;
+		viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
+
+
+
 
 
 	C::Get<float>(Vars.flWorldThirdPersonOffset);
 
 
 
-	viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_x->SetValue(C::Get<float>(Vars.flScreenViewModelX));
-	viewmodel_offset_y->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_y->SetValue(C::Get<float>(Vars.flScreenViewModelY));
-	viewmodel_offset_z->fnChangeCallbacks.Size() = NULL;
-	viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
+	
 
 
 
@@ -453,6 +461,9 @@ void FASTCALL H::hkFrameStageNotify(IBaseClientDll* thisptr, int edx, EClientFra
 		 * data has been received and we are going to start calling postdataupdate
 		 * e.g. resolver or skinchanger and other visuals
 		 */
+		if (C::Get<bool>(Vars.bSkinChanger))
+			CSkinChanger::Get().Run();
+
 
 		break;
 	}
@@ -519,6 +530,26 @@ void FASTCALL H::hkFrameStageNotify(IBaseClientDll* thisptr, int edx, EClientFra
 			// my solution is here cuz camera offset is dynamically by standard functions without any garbage in overrideview hook
 			I::Input->bCameraInThirdPerson = bThirdPerson && pLocal->IsAlive() && !I::Engine->IsTakingScreenshot();
 			I::Input->vecCameraOffset.z = bThirdPerson ? C::Get<float>(Vars.flWorldThirdPersonOffset) : 150.f;
+		}
+		//Ragdoll Gravity
+		if (C::Get<bool>(Vars.bRagdollGravity))
+		{
+			for (int i = 1; i <= I::ClientEntityList->GetHighestEntityIndex(); i++)
+			{
+				CBaseEntity* entity = I::ClientEntityList->Get<CBaseEntity>(i);
+
+				if (!entity || entity->IsDormant())
+					continue;
+				EClassIndex nClassIndex = entity->GetClientClass()->nClassID;
+				
+				if (nClassIndex == EClassIndex::CCSRagdoll)
+				{
+					auto ragdoll = entity;
+					auto force_multiplier = (C::Get<int>(Vars.iRagdollGravity));
+					ragdoll->m_vecForce() *= force_multiplier;
+					ragdoll->m_vecRagdollVelocity() *= force_multiplier;
+				}
+			}
 		}
 
 		break;

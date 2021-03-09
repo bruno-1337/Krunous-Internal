@@ -768,11 +768,9 @@ void T::SkinChanger()
 			}
 			ImGui::Checkbox(XorStr("Knife Changer"), &C::Get<bool>(Vars.bSkinChanger));
 			ImGui::SliderInt(XorStr("Knife"), &C::Get<int>(Vars.iSkinKnife), 0, 14, "%d");
-
-			for (const auto& item : mapItemList) //first - itemdefindex, second - skin item struct
-			{
-
-			}
+			ImGui::SliderInt(XorStr("Knife Skin"), &C::Get<int>(Vars.iSkinId), 0, 15, "%d");
+			ImGui::SliderInt(XorStr("Knife Seed"), &C::Get<int>(Vars.iSkinSeed), 0, 1000, "%d");
+			ImGui::HotKey(XorStr("Force Update Key"), &C::Get<int>(Vars.iForceKey));
 
 			ImGui::EndChild();
 		}

@@ -295,15 +295,17 @@ void CVisuals::Event(IGameEvent* pEvent, const FNV1A_t uNameHash)
 
 	const float flServerTime = TICKS_TO_TIME(pLocal->GetTickBase());
 
-	if (uNameHash == FNV1A::HashConst("round_freeze_end"))
-	{
-		kills = 0;
-		headshots = 0;
-	}
+	
 
 	if (C::Get<bool>(Vars.bQuake) && uNameHash == FNV1A::HashConst("player_death"))
 	{
 		CBaseEntity* pAttacker = I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetPlayerForUserID(pEvent->GetInt(XorStr("attacker"))));
+
+		if (I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetPlayerForUserID(pEvent->GetInt(XorStr("userid")))) == pLocal)
+		{
+			kills = 0;
+			headshots = 0;
+		}
 
 		if (pAttacker == pLocal)
 		{
@@ -335,10 +337,22 @@ void CVisuals::Event(IGameEvent* pEvent, const FNV1A_t uNameHash)
 					_soundFileName = "csgo\\sound\\triplekill.wav";
 					break;
 				case 4:
-					_soundFileName = "csgo\\sound\\unstoppable.wav";
+					_soundFileName = "csgo\\sound\\megakill.wav";
 					break;
 				case 5:
-					_soundFileName = "csgo\\sound\\monsterkill.wav";
+					_soundFileName = "csgo\\sound\\ultrakill.wav";
+					break;
+				case 6:
+					_soundFileName = "csgo\\sound\\rampage.wav";
+					break;
+				case 10:
+					_soundFileName = "csgo\\sound\\unstoppable.wav";
+					break;
+				case 15:
+					_soundFileName = "csgo\\sound\\godlike.wav";
+					break;
+				case 20:
+					_soundFileName = "csgo\\sound\\ownage.wav";
 					break;
 				default:
 					break;

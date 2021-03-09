@@ -96,6 +96,8 @@ struct Variables_t
 	C_ADD_VARIABLE(int, iPBone, 1);
 	C_ADD_VARIABLE(bool, bPOneShot, false);
 
+	C_ADD_VARIABLE(int, iForceKey, 0);//forcekey
+
 
 	C_ADD_VARIABLE(int, iRAimFov, 0);//RIFLE
 	C_ADD_VARIABLE(int, iRAimSmooth, 0);
@@ -293,6 +295,9 @@ struct Variables_t
 	//SkinChanger
 	C_ADD_VARIABLE(bool, bSkinChanger, false);
 	C_ADD_VARIABLE(int, iSkinKnife, 1);
+	C_ADD_VARIABLE(int, iSkinId, 1);
+	C_ADD_VARIABLE(int, iSkinSeed, 1);
+	
 
 	// exploits
 	C_ADD_VARIABLE(bool, bMiscPingSpike, false);

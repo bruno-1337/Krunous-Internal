@@ -21,7 +21,12 @@ public:
 	float b_Best;
 	void FindBlockbot(CBaseEntity* pLocal, CUserCmd* pCmd);
 	void DropBBOT();
+	void RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal);
+
+	void RunOldschool(CUserCmd* pCmd, CBaseEntity* pLocal);
+
 	Vector BCalcAngle(QAngle src, Vector dst);
+	void MoveC(CUserCmd* pCmd, const QAngle& angOldViewPoint) const;
 
 		float BCalcFov(Vector angle, Vector playerAngle);
 private:

@@ -326,7 +326,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bAntiAim))
 			CAntiAim::Get().Run(pCmd, pLocal, bSendPacket);
 
-		if (C::Get<bool>(Vars.bMiscBlockBot))
+		if (C::Get<int>(Vars.iMiscBlockBot) != 0)
 			CBlockBot::Get().Run(pCmd, pLocal);
 	}
 	CPrediction::Get().End(pCmd, pLocal);
@@ -342,12 +342,15 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		pCmd->angViewPoint.Clamp();
 	}
 
-	if (C::Get<int>(Vars.i180camerakey) != 0 && IPT::IsKeyDown(C::Get<int>(Vars.i180camerakey)))
+	if (C::Get<bool>(Vars.b180Camera))
 	{
-		if (pLocal || pLocal->IsAlive())
+		if (C::Get<int>(Vars.iMiscBlockBot) == 0 || !IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
 		{
-			pCmd->flSideMove = -pCmd->flSideMove;
-			pCmd->flForwardMove = -pCmd->flForwardMove;
+			if (pLocal || pLocal->IsAlive())
+			{
+				pCmd->flSideMove = -pCmd->flSideMove;
+				pCmd->flForwardMove = -pCmd->flForwardMove;
+			}
 		}
 	}
 	
@@ -735,10 +738,16 @@ void FASTCALL H::hkOverrideView(IClientModeShared* thisptr, int edx, CViewSetup*
 		(pWeaponData->nWeaponType == WEAPONTYPE_SNIPER ? !G::pLocal->IsScoped() : true))
 		// set camera fov
 		pSetup->flFOV += C::Get<float>(Vars.flScreenCameraFOV);
-
-	if (C::Get<bool>(Vars.bScreen) && C::Get<bool>(Vars.b180Camera))
+	static DWORD lastpress = 0;
+	if (C::Get<bool>(Vars.bScreen))
 	{
-		if (C::Get<int>(Vars.i180camerakey) != 0 && IPT::IsKeyDown(C::Get<int>(Vars.i180camerakey)))
+
+		if (IPT::IsKeyReleased(C::Get<int>(Vars.i180camerakey)))
+		{
+			C::Get<bool>(Vars.b180Camera) =  !C::Get<bool>(Vars.b180Camera);
+		}
+
+		if (C::Get<bool>(Vars.b180Camera))
 		{
 			auto sexooo = pSetup->angView;
 			sexooo.y -= 180.0f;

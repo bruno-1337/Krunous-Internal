@@ -300,10 +300,11 @@ struct Variables_t
 	
 
 	C_ADD_VARIABLE(bool, bMiscFakeLag, false); 
-	C_ADD_VARIABLE(bool, bMiscBlockBot, false);
+	
 	C_ADD_VARIABLE(bool, bMiscAutoAccept, false);
 	C_ADD_VARIABLE(bool, bMiscAutoPistol, false);
 	C_ADD_VARIABLE(bool, bMiscNoCrouchCooldown, false);
+	C_ADD_VARIABLE(int, iMiscBlockBot, 0);
 	C_ADD_VARIABLE(int, iBlockBotKey, 0);
 	
 

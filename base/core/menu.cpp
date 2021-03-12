@@ -522,9 +522,9 @@ void T::Visuals()
 
 				if (C::Get<bool>(Vars.bEspChamsEnemies) || C::Get<bool>(Vars.bEspChamsAllies))
 				{
-					ImGui::Combo(XorStr("players style##chams"), &C::Get<int>(Vars.iEspChamsPlayer), XorStr("covered\0flat\0wireframe\0reflective\0\0"));
+					ImGui::Combo(XorStr("Players style##chams"), &C::Get<int>(Vars.iEspChamsPlayer), XorStr("covered\0flat\0wireframe\0reflective\0\0"));
 					ImGui::Checkbox(XorStr("xqz"), &C::Get<bool>(Vars.bEspChamsXQZ));
-					ImGui::Checkbox(XorStr("disable occlusion"), &C::Get<bool>(Vars.bEspChamsDisableOcclusion));
+					ImGui::Checkbox(XorStr("Disable occlusion"), &C::Get<bool>(Vars.bEspChamsDisableOcclusion));
 					if (ImGui::IsItemHovered())
 						ImGui::SetTooltip(XorStr("may cause \"invisible\" players models sometimes"));
 				}
@@ -557,15 +557,15 @@ void T::Visuals()
 			}
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-			ImGui::Checkbox(XorStr("night mode"), &C::Get<bool>(Vars.bWorldNightMode));
+			ImGui::Checkbox(XorStr("Night mode"), &C::Get<bool>(Vars.bWorldNightMode));
 			ImGui::Checkbox(XorStr("Grenade Prediction"), &C::Get<bool>(Vars.bGrenadePred));
 
-			ImGui::SliderInt(XorStr("max flash effect"), &C::Get<int>(Vars.iWorldMaxFlash), 0, 100, "%d%%");
-			ImGui::MultiCombo(XorStr("removals"), C::Get<std::vector<bool>>(Vars.vecWorldRemovals), arrVisualsRemovals.data(), arrVisualsRemovals.size());
+			ImGui::SliderInt(XorStr("Max flash effect"), &C::Get<int>(Vars.iWorldMaxFlash), 0, 100, "%d%%");
+			ImGui::MultiCombo(XorStr("Removals"), C::Get<std::vector<bool>>(Vars.vecWorldRemovals), arrVisualsRemovals.data(), arrVisualsRemovals.size());
 			ImGui::Separator();
 
-			ImGui::HotKey(XorStr("thirdperson"), &C::Get<int>(Vars.iWorldThirdPersonKey));
-			ImGui::SliderFloat(XorStr("camera offset"), &C::Get<float>(Vars.flWorldThirdPersonOffset), 50.f, 300.f, "%.1f units");
+			ImGui::HotKey(XorStr("Thirdperson"), &C::Get<int>(Vars.iWorldThirdPersonKey));
+			ImGui::SliderFloat(XorStr("Camera offset"), &C::Get<float>(Vars.flWorldThirdPersonOffset), 50.f, 300.f, "%.1f units");
 			ImGui::PopStyleVar();
 
 			flWorldChildSize = ImGui::GetCursorPosY() + style.ItemSpacing.y;
@@ -583,19 +583,19 @@ void T::Visuals()
 			}
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-			ImGui::SliderFloat(XorStr("camera fov"), &C::Get<float>(Vars.flScreenCameraFOV), -89.f, 89.f, "%.1f\xC2\xB0");
-			ImGui::SliderFloat(XorStr("viewmodel fov"), &C::Get<float>(Vars.flScreenViewModelFOV), -90.f, 90.f, "%.1f\xC2\xB0");
-			ImGui::SliderFloat(XorStr("viewmodel X"), &C::Get<float>(Vars.flScreenViewModelX), -20.f, 20.f, "%.1f\xC2\xB0");
-			ImGui::SliderFloat(XorStr("viewmodel Y"), &C::Get<float>(Vars.flScreenViewModelY), -20.f, 20.f, "%.1f\xC2\xB0");
-			ImGui::SliderFloat(XorStr("viewmodel Z"), &C::Get<float>(Vars.flScreenViewModelZ), -20.f, 20.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("Camera fov"), &C::Get<float>(Vars.flScreenCameraFOV), -89.f, 89.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("Viewmodel fov"), &C::Get<float>(Vars.flScreenViewModelFOV), -90.f, 90.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("Viewmodel X"), &C::Get<float>(Vars.flScreenViewModelX), -20.f, 20.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("Viewmodel Y"), &C::Get<float>(Vars.flScreenViewModelY), -20.f, 20.f, "%.1f\xC2\xB0");
+			ImGui::SliderFloat(XorStr("Viewmodel Z"), &C::Get<float>(Vars.flScreenViewModelZ), -20.f, 20.f, "%.1f\xC2\xB0");
 			ImGui::Separator();
 
 			ImGui::Checkbox(XorStr("hitmarker"), &C::Get<bool>(Vars.bScreenHitMarker));
 			ImGui::Checkbox(XorStr("hitmarker damage"), &C::Get<bool>(Vars.bScreenHitMarkerDamage));
 			ImGui::Checkbox(XorStr("hitmarker sound"), &C::Get<bool>(Vars.bScreenHitMarkerSound));
-			ImGui::SliderFloat(XorStr("hitmarker time"), &C::Get<float>(Vars.flScreenHitMarkerTime), 0.5f, 5.f, "%.1fsec");
-			ImGui::SliderInt(XorStr("hitmarker gap"), &C::Get<int>(Vars.iScreenHitMarkerGap), 1, 20, "%d pixels");
-			ImGui::SliderInt(XorStr("hitmarker length"), &C::Get<int>(Vars.iScreenHitMarkerLenght), 1, 20, "%d pixels");
+			ImGui::SliderFloat(XorStr("Hitmarker time"), &C::Get<float>(Vars.flScreenHitMarkerTime), 0.5f, 5.f, "%.1fsec");
+			ImGui::SliderInt(XorStr("Hitmarker gap"), &C::Get<int>(Vars.iScreenHitMarkerGap), 1, 20, "%d pixels");
+			ImGui::SliderInt(XorStr("Hitmarker length"), &C::Get<int>(Vars.iScreenHitMarkerLenght), 1, 20, "%d pixels");
 			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
 			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
 			ImGui::SliderInt(XorStr("Ragdoll G Multiplier"), &C::Get<int>(Vars.iRagdollGravity), -10, 10, "%d G");
@@ -627,20 +627,20 @@ void T::Miscellaneous()
 			}
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-			ImGui::Checkbox(XorStr("bunny hop"), &C::Get<bool>(Vars.bMiscBunnyHop));
-			ImGui::SliderInt(XorStr("chance"), &C::Get<int>(Vars.iMiscBunnyHopChance), 0, 100, "%d%%");
-			ImGui::Checkbox(XorStr("autostrafe"), &C::Get<bool>(Vars.bMiscAutoStrafe));
+			ImGui::Checkbox(XorStr("Bunny hop"), &C::Get<bool>(Vars.bMiscBunnyHop));
+			ImGui::SliderInt(XorStr("Chance"), &C::Get<int>(Vars.iMiscBunnyHopChance), 0, 100, "%d%%");
+			ImGui::Checkbox(XorStr("Autostrafe"), &C::Get<bool>(Vars.bMiscAutoStrafe));
 			ImGui::Separator();
 
-			ImGui::Checkbox(XorStr("fake lag"), &C::Get<bool>(Vars.bMiscFakeLag));
-			ImGui::Checkbox(XorStr("Block bot"), &C::Get<bool>(Vars.bMiscBlockBot));
+			ImGui::Checkbox(XorStr("Fake lag"), &C::Get<bool>(Vars.bMiscFakeLag));
+			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("none\0Crosshair\0Oldschool\0\0"));
 			ImGui::HotKey(XorStr("Block bot key"), &C::Get<int>(Vars.iBlockBotKey));
 
-			ImGui::Checkbox(XorStr("auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
+			ImGui::Checkbox(XorStr("Auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
 			ImGui::Checkbox(XorStr("RCS"), &C::Get<bool>(Vars.bMiscRCS));
-			ImGui::Checkbox(XorStr("auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));
+			ImGui::Checkbox(XorStr("Auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));
 			ImGui::Checkbox(XorStr("Weapon Config"), &C::Get<bool>(Vars.bMiscWeaponConfig));
-			ImGui::Checkbox(XorStr("no crouch cooldown"), &C::Get<bool>(Vars.bMiscNoCrouchCooldown));
+			ImGui::Checkbox(XorStr("No crouch cooldown"), &C::Get<bool>(Vars.bMiscNoCrouchCooldown));
 			ImGui::PopStyleVar();
 
 			flMovementChildSize = ImGui::GetCursorPosY() + style.ItemSpacing.y;
@@ -656,11 +656,11 @@ void T::Miscellaneous()
 			}
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
-			ImGui::Checkbox(XorStr("ping spike"), &C::Get<bool>(Vars.bMiscPingSpike));
-			ImGui::SliderFloat(XorStr("latency factor"), &C::Get<float>(Vars.flMiscLatencyFactor), 0.1f, 1.0f, "%.1f second");
-			ImGui::Checkbox(XorStr("reveal ranks"), &C::Get<bool>(Vars.bMiscRevealRanks));
-			ImGui::Checkbox(XorStr("unlock inventory"), &C::Get<bool>(Vars.bMiscUnlockInventory));
-			ImGui::Checkbox(XorStr("anti-untrusted"), &C::Get<bool>(Vars.bMiscAntiUntrusted));
+			ImGui::Checkbox(XorStr("Ping spike"), &C::Get<bool>(Vars.bMiscPingSpike));
+			ImGui::SliderFloat(XorStr("Latency factor"), &C::Get<float>(Vars.flMiscLatencyFactor), 0.1f, 1.0f, "%.1f second");
+			ImGui::Checkbox(XorStr("Reveal ranks"), &C::Get<bool>(Vars.bMiscRevealRanks));
+			ImGui::Checkbox(XorStr("Unlock inventory"), &C::Get<bool>(Vars.bMiscUnlockInventory));
+			ImGui::Checkbox(XorStr("Anti-untrusted"), &C::Get<bool>(Vars.bMiscAntiUntrusted));
 			ImGui::PopStyleVar();
 
 			ImGui::EndChild();

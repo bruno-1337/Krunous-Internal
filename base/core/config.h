@@ -71,6 +71,15 @@ namespace C // @credits: ducarii
 	/* get path where output files will be saved (default: "%userprofile%\documents\.EsTruPo") */
 	std::filesystem::path GetWorkingPath();
 
+
+	// Values
+	/* default configs path */
+	const std::filesystem::path fsPath = GetWorkingPath() / XorStr("settings");
+	/* all user config filenames */
+	inline std::deque<std::string> vecFileNames = { };
+	/* configuration variables */
+	inline std::vector<VariableObject_t> vecVariables = { };
+
 	/* returns casted variable at given index */
 	template <typename T>
 	T& Get(const std::uint32_t nIndex)
@@ -85,12 +94,4 @@ namespace C // @credits: ducarii
 		vecVariables.emplace_back(uNameHash, uTypeHash, std::make_any<T>(pDefault));
 		return vecVariables.size() - 1U;
 	}
-
-	// Values
-	/* default configs path */
-	const std::filesystem::path fsPath = GetWorkingPath() / XorStr("settings");
-	/* all user config filenames */
-	inline std::deque<std::string> vecFileNames = { };
-	/* configuration variables */
-	inline std::vector<VariableObject_t> vecVariables = { };
 }

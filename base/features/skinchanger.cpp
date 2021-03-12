@@ -136,7 +136,7 @@ void CSkinChanger::Run()
 		{
 			switch (C::Get<int>(Vars.iSkinKnife))
 			{
-			case 0:
+			case 0:  
 				break;
 			case 1:
 				apply_knife_skin(weapon, WEAPON_KNIFE_BAYONET, SkinId, index_bayonet, 3);
@@ -186,11 +186,7 @@ void CSkinChanger::Run()
 	}
 
 
-	if ((C::Get<int>(Vars.iForceKey) > 0 && !IPT::IsKeyDown(C::Get<int>(Vars.iForceKey)))) //check for aimkey
-	{
-		
-	}
-	else
+	if ((C::Get<int>(Vars.iForceKey) != 0 && IPT::IsKeyDown(C::Get<int>(Vars.iForceKey)))) //check for aimkey
 	{
 		I::ClientState->iDeltaTick = -1;
 	}

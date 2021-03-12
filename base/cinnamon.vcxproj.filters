@@ -417,6 +417,9 @@
     <ClInclude Include="sdk\interfaces\iviewrender.h">
       <Filter>include\sdk\interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="features\blockbot.h">
+      <Filter>include\features</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="features\antiaim.cpp">
@@ -541,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="..\dependencies\minhook\hde\hde64.c">
       <Filter>dependencies\minhook\hde32</Filter>
+    </ClCompile>
+    <ClCompile Include="features\blockbot.cpp">
+      <Filter>source\features</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -27,10 +27,12 @@ public:
 	void GetWeaponConfig(CBaseEntity* pLocal);
 	int fov;
 	int smooth;
+	bool NBone;
 	bool oneshot;
 	int Aim_Bone;
 	int weapontype;
 	EBoneIndex GetBone();
+	int get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd* pCmd);
 
 	
 

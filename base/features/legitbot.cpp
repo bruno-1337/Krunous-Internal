@@ -66,60 +66,73 @@ void CLegitBot::SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd)
 void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 {
 	
-	
-	if (m_Target == -1)
+	auto weapont = pLocal->GetWeapon();
+	if (m_Target == -1 || weapont->GetAmmo() == 0 || !pLocal->IsAlive())
 		return;
 
-	
+	if (pLocal->GetShotsFired() >= 1 && oneshot == 1)
+		return;
 
+
+	fov = C::Get<int>(Vars.iAimFov);
+	smooth = C::Get<int>(Vars.iAimSmooth);
+	NBone = C::Get<bool>(Vars.bAimNBone);
+	if (C::Get<bool>(Vars.bMiscWeaponConfig))
+		GetWeaponConfig(pLocal);
 
 	CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(m_Target);
 	auto Local_Pos = pLocal->GetEyePosition();
 	Vector EnemyBonePos;
-	switch (Aim_Bone)
+
+	if (NBone)
 	{
-	case 1:
-	{
-		EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
-		break;
+		EnemyBonePos = *pEntity->GetBonePosition(get_best_bone(pLocal, pEntity, pCmd));
 	}
-	case 2:
+	else
 	{
-		EnemyBonePos = *pEntity->GetBonePosition(BONE_NECK);
-		break;
-	}
-	case 3:
-	{
-		EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_3);
-		break;
-	}
-	default:
-	{
-		EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
-		break;
-	}
+		switch (Aim_Bone)
+		{
+		case 1:
+			{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+			break;
+			}
+		case 2:
+			{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_NECK);
+			break;
+			}
+		case 3:
+			{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_3);
+			break;
+			}
+		default:
+			{
+			EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+			break;
+			}
+		}
 	}
 	
 	auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
+	
 	auto CurrentAngle = pCmd->angViewPoint;
 
-	fov = C::Get<int>(Vars.iAimFov);
-	smooth = C::Get<int>(Vars.iAimSmooth);
+	
 
-	if (C::Get<bool>(Vars.bMiscWeaponConfig))
-		GetWeaponConfig(pLocal);
+	if (pLocal->GetShotsFired() > 1)
+	{
+		QAngle aimPunch = pLocal->GetPunch();
+		EnemyAngle.x -= aimPunch.x * 2.0f;
+		EnemyAngle.y -= aimPunch.y * 2.0f;
+	}
+
+	
 
 	if (CLegitBot::CalcFov(EnemyAngle, CurrentAngle) < fov)
 	{
-		if (pLocal->GetShotsFired() > 1)
-		{
-
-			QAngle aimPunch = pLocal->GetPunch();
-			EnemyAngle.x -= aimPunch.x * 2.0f;
-			EnemyAngle.y -= aimPunch.y * 2.0f;
-		}
-		if (pLocal->GetShotsFired() >= 1 && oneshot == 1)
-			return;
+		
 		if (smooth > 0)
 		{
 			SmoothAngleSet(EnemyAngle, CurrentAngle, pCmd);
@@ -150,7 +163,7 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 	{
 		CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(i);
 
-		if (pEntity == nullptr || !pEntity->IsPlayer() || pEntity->IsDormant() || !pEntity->IsAlive() || i == fLocal->GetIndex())
+		if (pEntity == nullptr || pEntity == fLocal || pEntity->IsDormant() || !pEntity->IsAlive() || i == fLocal->GetIndex())
 			continue;
 
 		if (C::Get<bool>(Vars.iAimTeam))
@@ -187,16 +200,11 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 
 		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 		auto CurrentAngle = fCmd->angViewPoint;
-		if (fLocal->GetShotsFired() > 1)
-		{
 
-			QAngle aimPunch = fLocal->GetPunch();
-			EnemyAngle.x -= aimPunch.x * 2.0f;
-			EnemyAngle.y -= aimPunch.y * 2.0f;
-		}
-
-		if (C::Get<bool>(Vars.bAimAutoWall))
+		if (C::Get<bool>(Vars.bAimAutoWall) && !fLocal->IsVisible(pEntity, pEntity->GetBonePosition(BONE_HEAD).value_or(pEntity->GetEyePosition(false))))
 		{
+			continue;
+			/*
 			static CConVar* weapon_recoil_scale = I::ConVar->FindVar(XorStr("weapon_recoil_scale"));
 
 			if (weapon_recoil_scale == nullptr)
@@ -210,6 +218,8 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 			short nDefinitionIndex = pWeapon->GetItemDefinitionIndex();
 			CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(nDefinitionIndex);
 			QAngle angView = EnemyAngle;
+			angView += fLocal->GetPunch() * weapon_recoil_scale->GetFloat();;
+
 			Vector vecStart, vecEnd, vecForward;
 			M::AngleVectors(angView, &vecForward);
 			vecStart = fLocal->GetEyePosition();
@@ -234,7 +244,10 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 			{
 				//nice
 			}
-			else continue;
+			else
+			{
+				continue;
+			}*/
 
 
 		}
@@ -247,6 +260,7 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 			m_Target = i;
 		}
 	}
+
 }
 
 float CLegitBot::CalcFov(QAngle angle, QAngle playerAngle)
@@ -261,6 +275,120 @@ float CLegitBot::CalcFov(QAngle angle, QAngle playerAngle)
 	return fov;
 }
 
+int CLegitBot::get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd* pCmd)
+{
+
+	auto Local_Pos = pLocal->GetEyePosition();
+	Vector EnemyBonePos;
+
+	int bestbone = 0;
+	float bestfov = 9999.0f;
+
+	for (int i = 1; i <= 6; i++)
+	{
+		
+		switch (i)
+		{
+			case 1:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+				break;
+			}
+			case 2:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_NECK);
+				break;
+			}
+			case 3:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_3);
+				break;
+			}
+			case 4:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_2);
+				break;
+			}
+			case 5:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_SPINE_1);
+				break;
+			}
+			case 6:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_PELVIS);
+				break;
+			}
+			default:
+			{
+				EnemyBonePos = *pEntity->GetBonePosition(BONE_HEAD);
+				break;
+			}
+		}
+
+
+		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
+
+		if (pLocal->GetShotsFired() > 1)
+		{
+			QAngle aimPunch = pLocal->GetPunch();
+			EnemyAngle.x -= aimPunch.x * 2.0f;
+			EnemyAngle.y -= aimPunch.y * 2.0f;
+		}
+		auto CurrentAngle = pCmd->angViewPoint;
+
+		float tmp = CLegitBot::CalcFov(EnemyAngle, CurrentAngle);
+		
+		if (tmp < fov)
+		{
+			if (tmp < bestfov)
+			{
+				bestfov = tmp;
+				bestbone = i;
+			}
+		}
+
+	}
+	//printf("\nbest bone %d", bestbone);
+	switch (bestbone)
+	{
+	case 1:
+	{
+		return BONE_HEAD;
+		break;
+	}
+	case 2:
+	{
+		return BONE_NECK;
+		break;
+	}
+	case 3:
+	{
+		return BONE_SPINE_3;
+		break;
+	}
+	case 4:
+	{
+		return BONE_SPINE_2;
+		break;
+	}
+	case 5:
+	{
+		return BONE_SPINE_1;
+		break;
+	}
+	case 6:
+	{
+		return BONE_PELVIS;
+		break;
+	}
+	default:
+	{
+		return BONE_HEAD;
+		break;
+	}
+	}
+}
 
 void CLegitBot::GetWeaponConfig(CBaseEntity* pLocal)
 {
@@ -286,6 +414,8 @@ case WEAPONTYPE_PISTOL:
 	smooth = C::Get<int>(Vars.iPAimSmooth);
 	oneshot = C::Get<bool>(Vars.bPOneShot);
 	Aim_Bone = C::Get<int>(Vars.iPBone);
+	NBone = C::Get<bool>(Vars.bPAimNBone);
+
 	break;
 case WEAPONTYPE_SUBMACHINEGUN:
 	weapontype = 2;
@@ -293,6 +423,7 @@ case WEAPONTYPE_SUBMACHINEGUN:
 	smooth = C::Get<int>(Vars.iSMGAimSmooth);
 	oneshot = C::Get<bool>(Vars.bSMGOneShot);
 	Aim_Bone = C::Get<int>(Vars.iSMGBone);
+	NBone = C::Get<bool>(Vars.bSMGAimNBone);
 	break;
 case WEAPONTYPE_RIFLE:
 	weapontype = 3;
@@ -300,6 +431,7 @@ case WEAPONTYPE_RIFLE:
 	smooth = C::Get<int>(Vars.iRAimSmooth);
 	oneshot = C::Get<bool>(Vars.bROneShot);
 	Aim_Bone = C::Get<int>(Vars.iRBone);
+	NBone = C::Get<bool>(Vars.bRAimNBone);
 	break;
 case WEAPONTYPE_SHOTGUN:
 	weapontype = 4;
@@ -307,6 +439,7 @@ case WEAPONTYPE_SHOTGUN:
 	smooth = C::Get<int>(Vars.iSHAimSmooth);
 	oneshot = C::Get<bool>(Vars.bSHOneShot);
 	Aim_Bone = C::Get<int>(Vars.iSHBone);
+	NBone = C::Get<bool>(Vars.bSHAimNBone);
 	break;
 case WEAPONTYPE_SNIPER:
 	switch (nDefinitionIndex)
@@ -318,6 +451,7 @@ case WEAPONTYPE_SNIPER:
 		smooth = C::Get<int>(Vars.iAWPAimSmooth);
 		oneshot = C::Get<bool>(Vars.bAWPOneShot);
 		Aim_Bone = C::Get<int>(Vars.iAWPBone);
+		NBone = C::Get<bool>(Vars.bAWPAimNBone);
 		break;
 	}
 	case 40:
@@ -327,6 +461,7 @@ case WEAPONTYPE_SNIPER:
 		smooth = C::Get<int>(Vars.iSCOUTAimSmooth);
 		oneshot = C::Get<bool>(Vars.bSCOUTOneShot);
 		Aim_Bone = C::Get<int>(Vars.iSCOUTBone);
+		NBone = C::Get<bool>(Vars.bSCOUTAimNBone);
 		break;
 	}
 	case (11 || 38):
@@ -336,6 +471,7 @@ case WEAPONTYPE_SNIPER:
 		smooth = C::Get<int>(Vars.iAUTOAimSmooth);
 		oneshot = C::Get<bool>(Vars.bAUTOOneShot);
 		Aim_Bone = C::Get<int>(Vars.iAUTOBone);
+		NBone = C::Get<bool>(Vars.bAUTOAimNBone);
 		break;
 	}
 	default:
@@ -345,6 +481,7 @@ case WEAPONTYPE_SNIPER:
 		smooth = C::Get<int>(Vars.iSAimSmooth);
 		oneshot = C::Get<bool>(Vars.bSOneShot);
 		Aim_Bone = C::Get<int>(Vars.iSBone);
+		NBone = C::Get<bool>(Vars.bSAimNBone);
 		break;
 	}
 	}
@@ -355,6 +492,7 @@ case WEAPONTYPE_MACHINEGUN:
 	smooth = C::Get<int>(Vars.iMAimSmooth);
 	oneshot = C::Get<bool>(Vars.bMAOneShot);
 	Aim_Bone = C::Get<int>(Vars.iMABone);
+	NBone = C::Get<bool>(Vars.bMAAimNBone);
 	break;
 default:
 	Aim_Bone = 7;
@@ -362,6 +500,7 @@ default:
 	fov = 0;
 	smooth = 0;
 	oneshot = 1;
+	NBone = 0;
 	break;
 }
 }

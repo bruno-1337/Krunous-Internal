@@ -27,6 +27,7 @@
 #include "../features/visuals.h"
 #include "../features/misc.h"
 #include "../features/skinchanger.h"
+#include "../features/blockbot.h"
 
 static constexpr std::array<const char*, 3U> arrSmokeMaterials =
 {
@@ -170,9 +171,6 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 		static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
 		static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
 		static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
-		
-
-
 		viewmodel_offset_x->fnChangeCallbacks.Size() = NULL;
 		viewmodel_offset_x->SetValue(C::Get<float>(Vars.flScreenViewModelX));
 		viewmodel_offset_y->fnChangeCallbacks.Size() = NULL;
@@ -181,22 +179,9 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 		viewmodel_offset_z->SetValue(C::Get<float>(Vars.flScreenViewModelZ));
 
 
-
-
-
 	C::Get<float>(Vars.flWorldThirdPersonOffset);
-
-
-
-	
-
-
-
-	
-
 	static auto nick = I::ConVar->FindVar(XorStr("name"));
-	nick->fnChangeCallbacks.Size() = NULL;
-
+		nick->fnChangeCallbacks.Size() = NULL;
 
 
 
@@ -340,6 +325,9 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 
 		if (C::Get<bool>(Vars.bAntiAim))
 			CAntiAim::Get().Run(pCmd, pLocal, bSendPacket);
+
+		if (C::Get<bool>(Vars.bMiscBlockBot))
+			CBlockBot::Get().Run(pCmd, pLocal);
 	}
 	CPrediction::Get().End(pCmd, pLocal);
 
@@ -352,6 +340,15 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 	{
 		pCmd->angViewPoint.Normalize();
 		pCmd->angViewPoint.Clamp();
+	}
+
+	if (C::Get<int>(Vars.i180camerakey) != 0 && IPT::IsKeyDown(C::Get<int>(Vars.i180camerakey)))
+	{
+		if (pLocal || pLocal->IsAlive())
+		{
+			pCmd->flSideMove = -pCmd->flSideMove;
+			pCmd->flForwardMove = -pCmd->flForwardMove;
+		}
 	}
 	
 	if (C::Get<bool>(Vars.bMiscPingSpike))
@@ -731,12 +728,27 @@ void FASTCALL H::hkOverrideView(IClientModeShared* thisptr, int edx, CViewSetup*
 	if (pWeapon == nullptr)
 		return oOverrideView(thisptr, edx, pSetup);
 
+
 	if (CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(pWeapon->GetItemDefinitionIndex());
 		pWeaponData != nullptr && C::Get<bool>(Vars.bScreen) && std::fpclassify(C::Get<float>(Vars.flScreenCameraFOV)) != FP_ZERO &&
 		// check is we not scoped
 		(pWeaponData->nWeaponType == WEAPONTYPE_SNIPER ? !G::pLocal->IsScoped() : true))
 		// set camera fov
 		pSetup->flFOV += C::Get<float>(Vars.flScreenCameraFOV);
+
+	if (C::Get<bool>(Vars.bScreen) && C::Get<bool>(Vars.b180Camera))
+	{
+		if (C::Get<int>(Vars.i180camerakey) != 0 && IPT::IsKeyDown(C::Get<int>(Vars.i180camerakey)))
+		{
+			auto sexooo = pSetup->angView;
+			sexooo.y -= 180.0f;
+			sexooo.Normalize();
+			sexooo.Clamp();
+			pSetup->angView = sexooo;
+		}
+
+	}
+
 
 	oOverrideView(thisptr, edx, pSetup);
 }

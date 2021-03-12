@@ -290,12 +290,19 @@ void CVisuals::Event(IGameEvent* pEvent, const FNV1A_t uNameHash)
 
 	CBaseEntity* pLocal = CBaseEntity::GetLocalPlayer();
 
-	if (pLocal == nullptr || !pLocal->IsAlive())
-		return;
-
+	
+	
 	const float flServerTime = TICKS_TO_TIME(pLocal->GetTickBase());
 
-	
+	if (C::Get<bool>(Vars.bQuake) && uNameHash == FNV1A::HashConst("item_purchase"))
+	{
+		if (I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetPlayerForUserID(pEvent->GetInt(XorStr("userid")))) == pLocal)
+		{
+			std::string wigga_nigga = pEvent->GetString(XorStr("weapon"));
+			if (wigga_nigga == "item_kevlar" || wigga_nigga == "item_assaultsuit")
+				PlaySoundA("csgo\\sound\\red_armor.wav", NULL, SND_ASYNC);
+		}
+	}
 
 	if (C::Get<bool>(Vars.bQuake) && uNameHash == FNV1A::HashConst("player_death"))
 	{
@@ -306,6 +313,9 @@ void CVisuals::Event(IGameEvent* pEvent, const FNV1A_t uNameHash)
 			kills = 0;
 			headshots = 0;
 		}
+
+		if (pLocal == nullptr || !pLocal->IsAlive())
+			return;
 
 		if (pAttacker == pLocal)
 		{

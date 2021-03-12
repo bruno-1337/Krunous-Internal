@@ -95,6 +95,8 @@ struct Variables_t
 	C_ADD_VARIABLE(int, iPAimSmooth, 0);
 	C_ADD_VARIABLE(int, iPBone, 1);
 	C_ADD_VARIABLE(bool, bPOneShot, false);
+	C_ADD_VARIABLE(bool, bPAimNBone, false);
+
 
 	C_ADD_VARIABLE(int, iForceKey, 0);//forcekey
 
@@ -103,41 +105,49 @@ struct Variables_t
 	C_ADD_VARIABLE(int, iRAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bROneShot, false);
 	C_ADD_VARIABLE(int, iRBone, 1);
+	C_ADD_VARIABLE(bool, bRAimNBone, false);
 
 	C_ADD_VARIABLE(int, iSAimFov, 0);//SNIPER
 	C_ADD_VARIABLE(int, iSAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bSOneShot, false);
 	C_ADD_VARIABLE(int, iSBone, 1);
+	C_ADD_VARIABLE(bool, bSAimNBone, false);
 
 	C_ADD_VARIABLE(int, iSHAimFov, 0);//SHOTGUN
 	C_ADD_VARIABLE(int, iSHAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bSHOneShot, false);
 	C_ADD_VARIABLE(int, iSHBone, 1);
+	C_ADD_VARIABLE(bool, bSHAimNBone, false);
 
 	C_ADD_VARIABLE(int, iAWPAimFov, 0);//AWP
 	C_ADD_VARIABLE(int, iAWPAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bAWPOneShot, false);
 	C_ADD_VARIABLE(int, iAWPBone, 1);
+	C_ADD_VARIABLE(bool, bAWPAimNBone, false);
 
 	C_ADD_VARIABLE(int, iSCOUTAimFov, 0);//SCOUT
 	C_ADD_VARIABLE(int, iSCOUTAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bSCOUTOneShot, false);
 	C_ADD_VARIABLE(int, iSCOUTBone, 1);
+	C_ADD_VARIABLE(bool, bSCOUTAimNBone, false);
 
 	C_ADD_VARIABLE(int, iAUTOAimFov, 0);//AUTO
 	C_ADD_VARIABLE(int, iAUTOAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bAUTOOneShot, false);
 	C_ADD_VARIABLE(int, iAUTOBone, 1);
+	C_ADD_VARIABLE(bool, bAUTOAimNBone, false);
 
 	C_ADD_VARIABLE(int, iMAimFov, 0);//MACHINEGUN
 	C_ADD_VARIABLE(int, iMAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bMAOneShot, false);
 	C_ADD_VARIABLE(int, iMABone, 1);
+	C_ADD_VARIABLE(bool, bMAAimNBone, false);
 
 	C_ADD_VARIABLE(int, iSMGAimFov, 0);//SMG
 	C_ADD_VARIABLE(int, iSMGAimSmooth, 0);
 	C_ADD_VARIABLE(bool, bSMGOneShot, false);
 	C_ADD_VARIABLE(int, iSMGBone, 1);
+	C_ADD_VARIABLE(bool, bSMGAimNBone, false);
 	
 
 	C_ADD_VARIABLE(bool, bOneShot, false);
@@ -149,6 +159,7 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bAimLegs, false);
 	C_ADD_VARIABLE(bool, bAimAutoWall, false);
 	C_ADD_VARIABLE(bool, iAimTeam, false);
+	C_ADD_VARIABLE(bool, bAimNBone, false);
 
 	// trigger
 	C_ADD_VARIABLE(bool, bTrigger, false);
@@ -269,6 +280,10 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bQuake, false);
 	C_ADD_VARIABLE(int, iRagdollGravity, 2);
 	C_ADD_VARIABLE(bool, bRagdollGravity, false);
+
+	C_ADD_VARIABLE(bool, b180Camera, false);
+	C_ADD_VARIABLE(int, i180camerakey, 0);
+
 	C_ADD_VARIABLE(float, flScreenHitMarkerTime, 1.0f);
 	C_ADD_VARIABLE(int, iScreenHitMarkerGap, 5);
 	C_ADD_VARIABLE(int, iScreenHitMarkerLenght, 10);
@@ -284,10 +299,13 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bMiscRCS, false);
 	
 
-	C_ADD_VARIABLE(bool, bMiscFakeLag, false);
+	C_ADD_VARIABLE(bool, bMiscFakeLag, false); 
+	C_ADD_VARIABLE(bool, bMiscBlockBot, false);
 	C_ADD_VARIABLE(bool, bMiscAutoAccept, false);
 	C_ADD_VARIABLE(bool, bMiscAutoPistol, false);
 	C_ADD_VARIABLE(bool, bMiscNoCrouchCooldown, false);
+	C_ADD_VARIABLE(int, iBlockBotKey, 0);
+	
 
 	//Config
 	C_ADD_VARIABLE(bool, bMiscWeaponConfig, false);

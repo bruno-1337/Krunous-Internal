@@ -328,6 +328,18 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 
 		if (C::Get<int>(Vars.iMiscBlockBot) != 0)
 			CBlockBot::Get().Run(pCmd, pLocal);
+
+		if (C::Get<bool>(Vars.b180Camera))
+		{
+			if (C::Get<int>(Vars.iMiscBlockBot) == 0 || !IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
+			{
+				if (pLocal || pLocal->IsAlive())
+				{
+					pCmd->flSideMove = -pCmd->flSideMove;
+					pCmd->flForwardMove = -pCmd->flForwardMove;
+				}
+			}
+		}
 	}
 	CPrediction::Get().End(pCmd, pLocal);
 
@@ -342,19 +354,9 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		pCmd->angViewPoint.Clamp();
 	}
 
-	if (C::Get<bool>(Vars.b180Camera))
-	{
-		if (C::Get<int>(Vars.iMiscBlockBot) == 0 || !IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
-		{
-			if (pLocal || pLocal->IsAlive())
-			{
-				pCmd->flSideMove = -pCmd->flSideMove;
-				pCmd->flForwardMove = -pCmd->flForwardMove;
-			}
-		}
-	}
 	
-	if (C::Get<bool>(Vars.bMiscPingSpike))
+	
+	if (C::Get<bool>(Vars.bMiscPingSpike) || C::Get<bool>(Vars.bMiscPureBypass))
 		CLagCompensation::Get().UpdateIncomingSequences(pNetChannel);
 	else
 		CLagCompensation::Get().ClearIncomingSequences();

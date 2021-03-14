@@ -122,8 +122,8 @@ void W::MainWindow(IDirect3DDevice9* pDevice)
 		io.MousePos = ImVec2(static_cast<float>(x), static_cast<float>(y));
 
 		ImGui::SetNextWindowPos(ImVec2(vecScreenSize.x * 0.5f, vecScreenSize.y * 0.5f), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
-		ImGui::SetNextWindowSize(ImVec2(500, 327), ImGuiCond_Always);
-		ImGui::Begin(XorStr("EsTruPo_Hook"), &bMainOpened, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse);
+		//ImGui::SetNextWindowSize(ImVec2(800, 427), ImGuiCond_Always);
+		ImGui::Begin(XorStr("EsTruPo_Hook"), &bMainOpened, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse);
 		{
 			const ImVec2 vecPosition = ImGui::GetCursorScreenPos();
 			const float flWindowWidth = ImGui::GetWindowWidth();
@@ -596,7 +596,7 @@ void T::Visuals()
 			ImGui::SliderFloat(XorStr("Hitmarker time"), &C::Get<float>(Vars.flScreenHitMarkerTime), 0.5f, 5.f, "%.1fsec");
 			ImGui::SliderInt(XorStr("Hitmarker gap"), &C::Get<int>(Vars.iScreenHitMarkerGap), 1, 20, "%d pixels");
 			ImGui::SliderInt(XorStr("Hitmarker length"), &C::Get<int>(Vars.iScreenHitMarkerLenght), 1, 20, "%d pixels");
-			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
+			
 			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
 			ImGui::SliderInt(XorStr("Ragdoll G Multiplier"), &C::Get<int>(Vars.iRagdollGravity), -10, 10, "%d G");
 			ImGui::Checkbox(XorStr("180 camera"), &C::Get<bool>(Vars.b180Camera));
@@ -633,9 +633,9 @@ void T::Miscellaneous()
 			ImGui::Separator();
 
 			ImGui::Checkbox(XorStr("Fake lag"), &C::Get<bool>(Vars.bMiscFakeLag));
-			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("none\0Crosshair\0Oldschool\0\0"));
+			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("none\0Crosshair\0Normal\0\0"));
 			ImGui::HotKey(XorStr("Block bot key"), &C::Get<int>(Vars.iBlockBotKey));
-
+			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
 			ImGui::Checkbox(XorStr("Auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
 			ImGui::Checkbox(XorStr("RCS"), &C::Get<bool>(Vars.bMiscRCS));
 			ImGui::Checkbox(XorStr("Auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));
@@ -661,6 +661,7 @@ void T::Miscellaneous()
 			ImGui::Checkbox(XorStr("Reveal ranks"), &C::Get<bool>(Vars.bMiscRevealRanks));
 			ImGui::Checkbox(XorStr("Unlock inventory"), &C::Get<bool>(Vars.bMiscUnlockInventory));
 			ImGui::Checkbox(XorStr("Anti-untrusted"), &C::Get<bool>(Vars.bMiscAntiUntrusted));
+			ImGui::Checkbox(XorStr("Sv_Pure bipas"), &C::Get<bool>(Vars.bMiscPureBypass));
 			ImGui::PopStyleVar();
 
 			ImGui::EndChild();

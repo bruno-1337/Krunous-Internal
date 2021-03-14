@@ -44,7 +44,8 @@ void CBlockBot::RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	//Only target teammates within 245 units
 	float dist = 245.f;
-	for (int i = 0; i < I::Globals->nMaxClients; i++) {
+	for (int i = 0; i < I::Globals->nMaxClients; i++) 
+	{
 		CBaseEntity* current_ent = I::ClientEntityList->Get<CBaseEntity>(i);
 
 		if (!current_ent || current_ent == pLocal)
@@ -53,8 +54,9 @@ void CBlockBot::RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal)
 		if (!current_ent->IsAlive() || current_ent->IsDormant())
 			continue;
 
-		float current_dist = pLocal->GetAbsOrigin().DistTo(current_ent->GetAbsOrigin());
-		if (current_dist < dist) {
+		float current_dist = pLocal->GetOrigin().DistTo(current_ent->GetOrigin());
+		if (current_dist < dist) 
+		{
 			dist = current_dist;
 			closest_teammate = current_ent;
 		}
@@ -68,7 +70,7 @@ void CBlockBot::RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal)
 	float radius = 45.f;
 
 	static auto pi = std::atan(1) * 4;
-	auto target_origin = closest_teammate->GetAbsOrigin();
+	auto target_origin = closest_teammate->GetOrigin();
 	auto target_view = closest_teammate->GetViewAngles()->Normalize().y;
 
 	//Normalize the view to 0-360°
@@ -99,7 +101,7 @@ void CBlockBot::RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal)
 	Vector head_pos = *pLocal->GetBonePosition(BONE_HEAD);
 
 	//Null z pos
-	auto teammate_origin = closest_teammate->GetAbsOrigin();
+	auto teammate_origin = closest_teammate->GetOrigin();
 	head_pos.z = teammate_origin.z = 0.f;
 
 	//Return if we aren't close enough
@@ -113,7 +115,7 @@ void CBlockBot::RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal)
 	pCmd->flSideMove = dist_x > 0 ? 450.f : -450.f;
 	pCmd->flForwardMove = dist_y > 0 ? 450.f : -450.f;
 
-	//Fix our movement (we applied it from a y = -90 perspective
+	//Fix our movement (we applied it from a y = -90 perspective-
 	//				   Old angles, Current cmd
 	MoveC(pCmd, QAngle(0, -90, 0));
 }
@@ -135,6 +137,7 @@ void CBlockBot::RunOldschool(CUserCmd* pCmd, CBaseEntity* pLocal)
 	{
 		float bestdist = 250.f;
 		int index = -1;
+		bool blocked = false;
 
 		for (int i = 0; i < I::Globals->nMaxClients; i++)
 		{
@@ -158,20 +161,49 @@ void CBlockBot::RunOldschool(CUserCmd* pCmd, CBaseEntity* pLocal)
 		if (index == -1)
 			return;
 
+		blocked = true;
+		
+
+
 		CBaseEntity* target = I::ClientEntityList->Get<CBaseEntity>(index);
 
-		if (!target)
-			return;
+		if ((pLocal->GetOrigin() - *target->GetBonePosition(BONE_HEAD)).Length() < 43) // head position
+		{
+			Vector targetOrigin = target->GetOrigin() + target->GetVelocity() * 0.45f; //m_vecOrigin
+			targetOrigin.z = 0;
 
-		QAngle angles = M::CalcAngle(pLocal->GetOrigin(), target->GetOrigin());
+			Vector localOrigin = target->GetOrigin();
+			localOrigin.z = 0;
 
-		angles.y -= pCmd->angViewPoint.y;
-		angles.Normalize();
+			float distance = (targetOrigin - localOrigin).Length();
+			distance *= 2.f;
 
-		if (angles.y < 0.0f)
-			pCmd->flSideMove = 450.f;
-		else if (angles.y > 0.0f)
-			pCmd->flSideMove = -450.f;
+			if (distance > 10)
+				distance = 10;
+
+			float angle = pCmd->angViewPoint.y - M::CalcAngle(pLocal->GetOrigin(), target->GetOrigin()).y + 360.0f;
+
+			pCmd->flSideMove = (float)sin(angle * 0.0174533) * 45 * distance;
+			pCmd->flForwardMove = (float)cos(angle * 0.0174533) * 45 * distance;
+
+		}
+		else
+		{
+			if (IPT::IsKeyDown(0x57))
+				pCmd->flForwardMove = 450;
+			else
+				pCmd->flForwardMove = 0;
+
+			auto angle = M::CalcAngle(pLocal->GetEyePosition(), target->GetOrigin());
+			angle.y -= pLocal->GetViewAngles()->y;
+			angle.Normalize();
+
+			
+			float sidemove = -angle.y * 25;
+
+			pCmd->flSideMove = sidemove > 450 ? 450 : sidemove < -450 ? -450 : sidemove;
+		}
+
 	}
 }
 

@@ -77,7 +77,7 @@ void CSkinChanger::Run()
 
 		if (!weapon)
 			return;
-		if (pWeaponData->nWeaponType == WEAPONTYPE_KNIFE)
+		if (pWeaponData->nWeaponType == WEAPONTYPE_KNIFE && !(nDefinitionIndex == WEAPON_TASER))
 		{
 
 
@@ -132,7 +132,7 @@ void CSkinChanger::Run()
 		}
 		short dDefinitionIndex = weapon->GetItemDefinitionIndex();
 		CCSWeaponData* dWeaponData = I::WeaponSystem->GetWeaponData(dDefinitionIndex);
-		if (dWeaponData->nWeaponType == WEAPONTYPE_KNIFE)
+		if (dWeaponData->nWeaponType == WEAPONTYPE_KNIFE && !(dDefinitionIndex == WEAPON_TASER))
 		{
 			switch (C::Get<int>(Vars.iSkinKnife))
 			{

@@ -324,6 +324,7 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bMiscRevealRanks, false);
 	C_ADD_VARIABLE(bool, bMiscUnlockInventory, false);
 	C_ADD_VARIABLE(bool, bMiscAntiUntrusted, true);
+	C_ADD_VARIABLE(bool, bMiscPureBypass, true);
 	#pragma endregion
 
 	#pragma region variables_menu

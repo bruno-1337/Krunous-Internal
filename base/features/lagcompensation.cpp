@@ -26,7 +26,6 @@ void CLagCompensation::UpdateIncomingSequences(INetChannel* pNetChannel)
 		nLastIncomingSequence = pNetChannel->iInSequenceNr;
 		vecSequences.emplace_front(SequenceObject_t(pNetChannel->iInReliableState, pNetChannel->iOutReliableState, pNetChannel->iInSequenceNr, I::Globals->flRealTime));
 	}
-
 	// is cached too much sequences
 	if (vecSequences.size() > 2048U)
 		vecSequences.pop_back();

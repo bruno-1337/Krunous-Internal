@@ -420,6 +420,9 @@
     <ClInclude Include="features\blockbot.h">
       <Filter>include\features</Filter>
     </ClInclude>
+    <ClInclude Include="features\backtrack.h">
+      <Filter>include\features</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="features\antiaim.cpp">
@@ -546,6 +549,9 @@
       <Filter>dependencies\minhook\hde32</Filter>
     </ClCompile>
     <ClCompile Include="features\blockbot.cpp">
+      <Filter>source\features</Filter>
+    </ClCompile>
+    <ClCompile Include="features\backtrack.cpp">
       <Filter>source\features</Filter>
     </ClCompile>
   </ItemGroup>

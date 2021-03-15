@@ -227,8 +227,7 @@ void T::LegitBot()
 			ImGui::HotKey(XorStr("activation key"), &C::Get<int>(Vars.iAimKey));
 			ImGui::Separator();
 
-			if (C::Get<bool>(Vars.bMiscWeaponConfig))
-			{
+
 				CBaseEntity* pLocal = I::ClientEntityList->Get<CBaseEntity>(I::Engine->GetLocalPlayer());
 				if (pLocal)
 				{
@@ -244,7 +243,7 @@ void T::LegitBot()
 						{
 
 						case WEAPONTYPE_PISTOL:
-							ImGui::SliderInt(XorStr("Pistol Fov##legitbot"), &C::Get<int>(Vars.iPAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("Pistol Fov##legitbot"), &C::Get<float>(Vars.iPAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("Pistol Smooth##legitbot"), &C::Get<int>(Vars.iPAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bPOneShot));
 							ImGui::SliderInt(XorStr("Pistol Bone##legitbot"), &C::Get<int>(Vars.iPBone), 1, 3, "%d");
@@ -252,21 +251,21 @@ void T::LegitBot()
 
 							break;
 						case WEAPONTYPE_SUBMACHINEGUN:
-							ImGui::SliderInt(XorStr("SMG Fov##legitbot"), &C::Get<int>(Vars.iSMGAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("SMG Fov##legitbot"), &C::Get<float>(Vars.iSMGAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("SMG Smooth##legitbot"), &C::Get<int>(Vars.iSMGAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSMGOneShot));
 							ImGui::SliderInt(XorStr("SMG Bone##legitbot"), &C::Get<int>(Vars.iSMGBone), 1, 3, "%d");
 							ImGui::Checkbox(XorStr("Nearest Bone##legitbot"), &C::Get<bool>(Vars.bSMGAimNBone));
 							break;
 						case WEAPONTYPE_RIFLE:
-							ImGui::SliderInt(XorStr("Rifle Fov##legitbot"), &C::Get<int>(Vars.iRAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("Rifle Fov##legitbot"), &C::Get<float>(Vars.iRAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("Rifle Smooth##legitbot"), &C::Get<int>(Vars.iRAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bROneShot));
 							ImGui::SliderInt(XorStr("Rifle Bone##legitbot"), &C::Get<int>(Vars.iRBone), 1, 3, "%d");
 							ImGui::Checkbox(XorStr("Nearest Bone##legitbot"), &C::Get<bool>(Vars.bRAimNBone));
 							break;
 						case WEAPONTYPE_SHOTGUN:
-							ImGui::SliderInt(XorStr("Shotgun Fov##legitbot"), &C::Get<int>(Vars.iSHAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("Shotgun Fov##legitbot"), &C::Get<float>(Vars.iSHAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("Shotgun Smooth##legitbot"), &C::Get<int>(Vars.iSHAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSHOneShot));
 							ImGui::SliderInt(XorStr("Shotgun Bone##legitbot"), &C::Get<int>(Vars.iSHBone), 1, 3, "%d");
@@ -277,7 +276,7 @@ void T::LegitBot()
 							{
 							case 9:
 								{
-								ImGui::SliderInt(XorStr("Awp Fov##legitbot"), &C::Get<int>(Vars.iAWPAimFov), 0, 180, "%d");
+								ImGui::SliderFloat(XorStr("Awp Fov##legitbot"), &C::Get<float>(Vars.iAWPAimFov), 0, 180, "%.2f");
 								ImGui::SliderInt(XorStr("Awp Smooth##legitbot"), &C::Get<int>(Vars.iAWPAimSmooth), 0, 100, "%d");
 								ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bAWPOneShot));
 								ImGui::SliderInt(XorStr("Awp Bone##legitbot"), &C::Get<int>(Vars.iAWPBone), 1, 3, "%d");
@@ -286,7 +285,7 @@ void T::LegitBot()
 								}
 							case 40:
 							{
-								ImGui::SliderInt(XorStr("Scout Fov##legitbot"), &C::Get<int>(Vars.iSCOUTAimFov), 0, 180, "%d");
+								ImGui::SliderFloat(XorStr("Scout Fov##legitbot"), &C::Get<float>(Vars.iSCOUTAimFov), 0, 180, "%.2f");
 								ImGui::SliderInt(XorStr("Scout Smooth##legitbot"), &C::Get<int>(Vars.iSCOUTAimSmooth), 0, 100, "%d");
 								ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSCOUTOneShot));
 								ImGui::SliderInt(XorStr("Scout Bone##legitbot"), &C::Get<int>(Vars.iSCOUTBone), 1, 3, "%d");
@@ -295,7 +294,7 @@ void T::LegitBot()
 							}
 							case (11 || 38):
 							{
-								ImGui::SliderInt(XorStr("Auto Sniper Fov##legitbot"), &C::Get<int>(Vars.iAUTOAimFov), 0, 180, "%d");
+								ImGui::SliderFloat(XorStr("Auto Sniper Fov##legitbot"), &C::Get<float>(Vars.iAUTOAimFov), 0, 180, "%.2f");
 								ImGui::SliderInt(XorStr("Auto Sniper Smooth##legitbot"), &C::Get<int>(Vars.iAUTOAimSmooth), 0, 100, "%d");
 								ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bAUTOOneShot));
 								ImGui::SliderInt(XorStr("Auto Sniper Bone##legitbot"), &C::Get<int>(Vars.iAUTOBone), 1, 3, "%d");
@@ -304,7 +303,7 @@ void T::LegitBot()
 							}
 							default:
 							{
-								ImGui::SliderInt(XorStr("Sniper Fov##legitbot"), &C::Get<int>(Vars.iSAimFov), 0, 180, "%d");
+								ImGui::SliderFloat(XorStr("Sniper Fov##legitbot"), &C::Get<float>(Vars.iSAimFov), 0, 180, "%.2f");
 								ImGui::SliderInt(XorStr("Sniper Smooth##legitbot"), &C::Get<int>(Vars.iSAimSmooth), 0, 100, "%d");
 								ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bSOneShot));
 								ImGui::SliderInt(XorStr("Sniper Bone##legitbot"), &C::Get<int>(Vars.iSBone), 1, 3, "%d");
@@ -316,14 +315,14 @@ void T::LegitBot()
 							
 							break;
 						case WEAPONTYPE_MACHINEGUN:
-							ImGui::SliderInt(XorStr("Machine Gun Fov##legitbot"), &C::Get<int>(Vars.iMAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("Machine Gun Fov##legitbot"), &C::Get<float>(Vars.iMAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("Machine Gun Smooth##legitbot"), &C::Get<int>(Vars.iMAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bMAOneShot));
 							ImGui::SliderInt(XorStr("Machine Gun Bone##legitbot"), &C::Get<int>(Vars.iMABone), 1, 3, "%d");
 							ImGui::Checkbox(XorStr("Nearest Bone##legitbot"), &C::Get<bool>(Vars.bMAAimNBone));
 							break;
 						default:
-							ImGui::SliderInt(XorStr("Fov##legitbot"), &C::Get<int>(Vars.iAimFov), 0, 180, "%d");
+							ImGui::SliderFloat(XorStr("Fov##legitbot"), &C::Get<float>(Vars.iAimFov), 0, 180, "%.2f");
 							ImGui::SliderInt(XorStr("Smooth##legitbot"), &C::Get<int>(Vars.iAimSmooth), 0, 100, "%d");
 							ImGui::Checkbox(XorStr("One Shot##legitbot"), &C::Get<bool>(Vars.bOneShot));
 							ImGui::SliderInt(XorStr("Bone##legitbot"), &C::Get<int>(Vars.iBone), 1, 3, "%d");
@@ -331,16 +330,8 @@ void T::LegitBot()
 							break;
 						}
 					}
+
 				}
-			}
-			else
-			{
-				ImGui::SliderInt(XorStr("Fov##legitbot"), &C::Get<int>(Vars.iAimFov), 0, 180, "%d");
-				ImGui::SliderInt(XorStr("Smooth##legitbot"), &C::Get<int>(Vars.iAimSmooth), 0, 100, "%d");
-				ImGui::SliderInt(XorStr("Bone##legitbot"), &C::Get<int>(Vars.iBone), 1, 3, "%d");
-				ImGui::Checkbox(XorStr("Nearest Bone##legitbot"), &C::Get<bool>(Vars.bAimNBone));
-				
-			}
 			ImGui::Checkbox(XorStr("Visual Check##legitbot"), &C::Get<bool>(Vars.bAimAutoWall));
 			ImGui::Checkbox(XorStr("Enemy Only##legitbot"), &C::Get<bool>(Vars.iAimTeam));
 			ImGui::PopStyleVar();
@@ -559,6 +550,8 @@ void T::Visuals()
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
 			ImGui::Checkbox(XorStr("Night mode"), &C::Get<bool>(Vars.bWorldNightMode));
 			ImGui::Checkbox(XorStr("Grenade Prediction"), &C::Get<bool>(Vars.bGrenadePred));
+			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
+			ImGui::SliderInt(XorStr("Ragdoll G Multiplier"), &C::Get<int>(Vars.iRagdollGravity), -10, 10, "%d G");
 
 			ImGui::SliderInt(XorStr("Max flash effect"), &C::Get<int>(Vars.iWorldMaxFlash), 0, 100, "%d%%");
 			ImGui::MultiCombo(XorStr("Removals"), C::Get<std::vector<bool>>(Vars.vecWorldRemovals), arrVisualsRemovals.data(), arrVisualsRemovals.size());
@@ -566,6 +559,7 @@ void T::Visuals()
 
 			ImGui::HotKey(XorStr("Thirdperson"), &C::Get<int>(Vars.iWorldThirdPersonKey));
 			ImGui::SliderFloat(XorStr("Camera offset"), &C::Get<float>(Vars.flWorldThirdPersonOffset), 50.f, 300.f, "%.1f units");
+
 			ImGui::PopStyleVar();
 
 			flWorldChildSize = ImGui::GetCursorPosY() + style.ItemSpacing.y;
@@ -597,8 +591,7 @@ void T::Visuals()
 			ImGui::SliderInt(XorStr("Hitmarker gap"), &C::Get<int>(Vars.iScreenHitMarkerGap), 1, 20, "%d pixels");
 			ImGui::SliderInt(XorStr("Hitmarker length"), &C::Get<int>(Vars.iScreenHitMarkerLenght), 1, 20, "%d pixels");
 			
-			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
-			ImGui::SliderInt(XorStr("Ragdoll G Multiplier"), &C::Get<int>(Vars.iRagdollGravity), -10, 10, "%d G");
+			
 			ImGui::Checkbox(XorStr("180 camera"), &C::Get<bool>(Vars.b180Camera));
 			ImGui::HotKey(XorStr("180 camera key"), &C::Get<int>(Vars.i180camerakey));
 
@@ -622,7 +615,7 @@ void T::Miscellaneous()
 		{
 			if (ImGui::BeginMenuBar())
 			{
-				ImGui::TextUnformatted(XorStr("movement"));
+				ImGui::TextUnformatted(XorStr("Movement"));
 				ImGui::EndMenuBar();
 			}
 
@@ -633,13 +626,12 @@ void T::Miscellaneous()
 			ImGui::Separator();
 
 			ImGui::Checkbox(XorStr("Fake lag"), &C::Get<bool>(Vars.bMiscFakeLag));
-			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("none\0Crosshair\0Normal\0\0"));
+			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("None\0Crosshair\0Normal\0\0"));
 			ImGui::HotKey(XorStr("Block bot key"), &C::Get<int>(Vars.iBlockBotKey));
 			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
 			ImGui::Checkbox(XorStr("Auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
 			ImGui::Checkbox(XorStr("RCS"), &C::Get<bool>(Vars.bMiscRCS));
 			ImGui::Checkbox(XorStr("Auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));
-			ImGui::Checkbox(XorStr("Weapon Config"), &C::Get<bool>(Vars.bMiscWeaponConfig));
 			ImGui::Checkbox(XorStr("No crouch cooldown"), &C::Get<bool>(Vars.bMiscNoCrouchCooldown));
 			ImGui::PopStyleVar();
 
@@ -661,7 +653,9 @@ void T::Miscellaneous()
 			ImGui::Checkbox(XorStr("Reveal ranks"), &C::Get<bool>(Vars.bMiscRevealRanks));
 			ImGui::Checkbox(XorStr("Unlock inventory"), &C::Get<bool>(Vars.bMiscUnlockInventory));
 			ImGui::Checkbox(XorStr("Anti-untrusted"), &C::Get<bool>(Vars.bMiscAntiUntrusted));
-			ImGui::Checkbox(XorStr("Sv_Pure bipas"), &C::Get<bool>(Vars.bMiscPureBypass));
+			ImGui::Checkbox(XorStr("Backtrack"), &C::Get<bool>(Vars.bMiscBacktrack));
+			ImGui::SliderInt(XorStr("Backtrack ticks"), &C::Get<int>(Vars.iMiscBacktrackTicks), 1, 13, "%d Ticks");
+			ImGui::Checkbox(XorStr("sv_pure bypass"), &C::Get<bool>(Vars.bMiscPureBypass));
 			ImGui::PopStyleVar();
 
 			ImGui::EndChild();

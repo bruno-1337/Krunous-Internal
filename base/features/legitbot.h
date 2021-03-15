@@ -25,11 +25,13 @@ public:
 	void SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd);
 	QAngle rcs_old_punch = { 0.0f, 0.0f, 0.0f };
 	void GetWeaponConfig(CBaseEntity* pLocal);
-	int fov;
+	float fov;
 	int smooth;
 	bool NBone;
 	bool oneshot;
+	int R_Bone;
 	int Aim_Bone;
+	void SortBone();
 	int weapontype;
 	EBoneIndex GetBone();
 	int get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd* pCmd);

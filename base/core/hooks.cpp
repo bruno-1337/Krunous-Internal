@@ -28,6 +28,7 @@
 #include "../features/misc.h"
 #include "../features/skinchanger.h"
 #include "../features/blockbot.h"
+#include "../features/backtrack.h"
 
 static constexpr std::array<const char*, 3U> arrSmokeMaterials =
 {
@@ -354,7 +355,8 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		pCmd->angViewPoint.Clamp();
 	}
 
-	
+	if (C::Get<bool>(Vars.bMiscBacktrack))
+		CBacktrack::Get().Run(pCmd, pLocal);
 	
 	if (C::Get<bool>(Vars.bMiscPingSpike) || C::Get<bool>(Vars.bMiscPureBypass))
 		CLagCompensation::Get().UpdateIncomingSequences(pNetChannel);

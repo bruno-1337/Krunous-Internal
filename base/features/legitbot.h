@@ -15,6 +15,13 @@ class CLegitBot : public CSingleton<CLegitBot>
 public:
 	// Get
 	void Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket);
+	float fov;
+
+	
+
+	
+private:
+
 	void FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd);
 	bool IsValid(int i);
 	void DropTarget();
@@ -25,7 +32,6 @@ public:
 	void SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd);
 	QAngle rcs_old_punch = { 0.0f, 0.0f, 0.0f };
 	void GetWeaponConfig(CBaseEntity* pLocal);
-	float fov;
 	int smooth;
 	bool NBone;
 	bool oneshot;
@@ -35,11 +41,7 @@ public:
 	int weapontype;
 	EBoneIndex GetBone();
 	int get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd* pCmd);
-
-	
-
 	float CalcFov(QAngle angle, QAngle playerAngle);
-private:
 	// Main
 	/* aimbot, smooth, etc */
 	

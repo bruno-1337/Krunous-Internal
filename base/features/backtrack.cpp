@@ -91,10 +91,8 @@ float CBacktrack::BCalcFov(QAngle angle, QAngle playerAngle)
 {
 
 
-	float fov = sqrt(pow(angle.x - playerAngle.x, 2) + pow(angle.y - playerAngle.y, 2));
-	if (fov > 180)
-	{
-		return abs(360.f - fov);
-	}
-	return fov;
+	QAngle delta = angle - playerAngle;
+	delta.Normalize();
+
+	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
 }

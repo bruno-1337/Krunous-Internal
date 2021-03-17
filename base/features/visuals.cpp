@@ -17,6 +17,8 @@
 // used: get weapon icon
 #include "../utilities.h"
 
+#include "legitbot.h"
+
 #include <Windows.h>
 
 // @note: avoid store imcolor, store either u32 of imvec4
@@ -39,6 +41,9 @@ void CVisuals::Store()
 		return;
 
 	const ImVec2 vecScreenSize = ImGui::GetIO().DisplaySize;
+
+	if (C::Get<bool>(Vars.bDrawFov))
+		DrawFov();
 
 	#pragma region visuals_store_world
 	// render scope lines
@@ -70,6 +75,7 @@ void CVisuals::Store()
 	{
 		if (C::Get<bool>(Vars.bScreenHitMarker))
 			HitMarker(vecScreenSize, flServerTime, C::Get<Color>(Vars.colScreenHitMarker), C::Get<Color>(Vars.colScreenHitMarkerDamage));
+		;
 	}
 	#pragma endregion
 
@@ -1360,4 +1366,21 @@ void CVisuals::FlashBar(CBaseEntity* pEntity, Context_t& ctx, const Color& colPr
 	// bar
 	D::AddRect(ImVec2(ctx.box.left, ctx.box.top - 5 - ctx.arrPadding.at(DIR_TOP)), ImVec2(ctx.box.left + ctx.box.width * flFactor, ctx.box.top - 3 - ctx.arrPadding.at(DIR_TOP)), colPrimary, DRAW_RECT_FILLED);
 	ctx.arrPadding.at(DIR_TOP) += 6.0f;
+}
+
+void CVisuals::DrawFov()
+{
+	if (C::Get<bool>(Vars.bDrawFov))
+	{
+		int width, height;
+		I::Engine->GetScreenSize(width, height);
+
+		float aimbotFov = ((CLegitBot::Get().fov) / 3) * 2;
+		float fov = 90;
+		
+		float radius = tanf(M_DEG2RAD(aimbotFov) / 2) / tanf(M_DEG2RAD(fov) / 2)  * width;
+
+		D::AddCircle(ImVec2(width / 2, height / 2), radius, Color(255, 0, 0));
+	}
+
 }

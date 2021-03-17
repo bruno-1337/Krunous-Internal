@@ -169,6 +169,9 @@ long D3DAPI H::hkEndScene(IDirect3DDevice9* pDevice)
 	static void* pUsedAddress = nullptr;
 
 
+
+
+
 		static auto viewmodel_offset_x = I::ConVar->FindVar(XorStr("viewmodel_offset_x"));
 		static auto viewmodel_offset_y = I::ConVar->FindVar(XorStr("viewmodel_offset_y"));
 		static auto viewmodel_offset_z = I::ConVar->FindVar(XorStr("viewmodel_offset_z"));
@@ -321,26 +324,74 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bTrigger))
 			CTriggerBot::Get().Run(pCmd, pLocal);
 
+		if (C::Get<bool>(Vars.bMiscBacktrack))
+			CBacktrack::Get().Run(pCmd, pLocal);
+
 		if (C::Get<bool>(Vars.bAntiAim))
 			CAntiAim::Get().UpdateServerAnimations(pCmd, pLocal);
 
 		if (C::Get<bool>(Vars.bAntiAim))
 			CAntiAim::Get().Run(pCmd, pLocal, bSendPacket);
 
+		if (C::Get<bool>(Vars.bClanTag))
+		{
+
+				switch (int(I::Globals->flCurrentTime * 2.4) % 30)
+				{
+				
+				case 0:  U::SendClanTag(XorStr("                  "), XorStr("tiotika")); break;
+				case 1:  U::SendClanTag(XorStr("                 E"), XorStr("tiotika")); break;
+				case 2:  U::SendClanTag(XorStr("                Es"), XorStr("tiotika")); break;
+				case 3:  U::SendClanTag(XorStr("               EsT"), XorStr("tiotika")); break;
+				case 4:  U::SendClanTag(XorStr("              EsTr"), XorStr("tiotika")); break;
+				case 5:  U::SendClanTag(XorStr("             EsTru"), XorStr("tiotika")); break;
+				case 6:  U::SendClanTag(XorStr("            EsTruP"), XorStr("tiotika")); break;
+				case 7:  U::SendClanTag(XorStr("           EsTruPo"), XorStr("tiotika")); break;
+				case 8:  U::SendClanTag(XorStr("          EsTruPo_"), XorStr("tiotika")); break;
+				case 9:  U::SendClanTag(XorStr("         EsTruPo_H"), XorStr("tiotika")); break;
+				case 10: U::SendClanTag(XorStr("        EsTruPo_Ho"), XorStr("tiotika")); break;
+				case 11: U::SendClanTag(XorStr("       EsTruPo_Hoo"), XorStr("tiotika")); break;
+				case 12: U::SendClanTag(XorStr("      EsTruPo_Hook"), XorStr("tiotika")); break;
+				case 13: U::SendClanTag(XorStr("     EsTruPo_Hook "), XorStr("tiotika")); break;
+				case 14: U::SendClanTag(XorStr("    EsTruPo_Hook  "), XorStr("tiotika")); break;
+				case 15: U::SendClanTag(XorStr("   EsTruPo_Hook   "), XorStr("tiotika")); break;
+				case 16: U::SendClanTag(XorStr("  EsTruPo_Hook    "), XorStr("tiotika")); break;
+				case 17: U::SendClanTag(XorStr(" EsTruPo_Hook     "), XorStr("tiotika")); break;
+				case 18: U::SendClanTag(XorStr("EsTruPo_Hook      "), XorStr("tiotika")); break;
+				case 19: U::SendClanTag(XorStr("sTruPo_Hook       "), XorStr("tiotika")); break;
+				case 20: U::SendClanTag(XorStr("TruPo_Hook        "), XorStr("tiotika")); break;
+				case 21: U::SendClanTag(XorStr("ruPo_Hook         "), XorStr("tiotika")); break;
+				case 22: U::SendClanTag(XorStr("uPo_Hook          "), XorStr("tiotika")); break;
+				case 23: U::SendClanTag(XorStr("Po_Hook           "), XorStr("tiotika")); break;
+				case 24: U::SendClanTag(XorStr("o_Hook            "), XorStr("tiotika")); break;
+				case 25: U::SendClanTag(XorStr("_Hook             "), XorStr("tiotika")); break;
+				case 26: U::SendClanTag(XorStr("Hook              "), XorStr("tiotika")); break;
+				case 27: U::SendClanTag(XorStr("ook               "), XorStr("tiotika")); break;
+				case 28: U::SendClanTag(XorStr("ok                "), XorStr("tiotika")); break;
+				case 29: U::SendClanTag(XorStr("k                 "), XorStr("tiotika")); break;
+				case 30: U::SendClanTag(XorStr("                  "), XorStr("tiotika")); break;
+
+				
+				}
+		}
+
 		if (C::Get<int>(Vars.iMiscBlockBot) != 0)
+
 			CBlockBot::Get().Run(pCmd, pLocal);
 
-		if (C::Get<bool>(Vars.b180Camera))
-		{
-			if (C::Get<int>(Vars.iMiscBlockBot) == 0 || !IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
+
+			if (pLocal)
 			{
-				if (pLocal || pLocal->IsAlive())
+				static auto weapon_debug_spread_show = I::ConVar->FindVar(XorStr("weapon_debug_spread_show"));
+				if (weapon_debug_spread_show->fnChangeCallbacks.Size() != NULL)
 				{
-					pCmd->flSideMove = -pCmd->flSideMove;
-					pCmd->flForwardMove = -pCmd->flForwardMove;
+					weapon_debug_spread_show->fnChangeCallbacks.Size() = NULL;
+				}
+				if (pLocal->IsAlive())
+				{
+					weapon_debug_spread_show->SetValue(pLocal->IsScoped() || !C::Get<bool>(Vars.bSniperCrosshair) ? 0 : 3);
 				}
 			}
-		}
 	}
 	CPrediction::Get().End(pCmd, pLocal);
 
@@ -355,8 +406,9 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		pCmd->angViewPoint.Clamp();
 	}
 
-	if (C::Get<bool>(Vars.bMiscBacktrack))
-		CBacktrack::Get().Run(pCmd, pLocal);
+	
+
+	
 	
 	if (C::Get<bool>(Vars.bMiscPingSpike) || C::Get<bool>(Vars.bMiscPureBypass))
 		CLagCompensation::Get().UpdateIncomingSequences(pNetChannel);
@@ -763,6 +815,9 @@ void FASTCALL H::hkOverrideView(IClientModeShared* thisptr, int edx, CViewSetup*
 	}
 
 
+	
+
+
 	oOverrideView(thisptr, edx, pSetup);
 }
 
@@ -800,6 +855,8 @@ int FASTCALL H::hkDoPostScreenEffects(IClientModeShared* thisptr, int edx, CView
 
 	if (G::pLocal != nullptr && C::Get<bool>(Vars.bEsp) && C::Get<bool>(Vars.bEspGlow))
 		CVisuals::Get().Glow(G::pLocal);
+
+	
 
 	return oDoPostScreenEffects(thisptr, edx, pSetup);
 }

@@ -73,6 +73,7 @@ enum class EVisualsViewModelChams : int
 
 struct Variables_t
 {
+
 	#pragma region variables_rage
 	// aimbot
 	C_ADD_VARIABLE(bool, bRage, false);
@@ -96,6 +97,8 @@ struct Variables_t
 	C_ADD_VARIABLE(int, iPBone, 1);
 	C_ADD_VARIABLE(bool, bPOneShot, false);
 	C_ADD_VARIABLE(bool, bPAimNBone, false);
+
+	C_ADD_VARIABLE(float, FinalMeme, 5.f);
 
 
 	C_ADD_VARIABLE(int, iForceKey, 0);//forcekey
@@ -264,8 +267,11 @@ struct Variables_t
 	C_ADD_VARIABLE(int, iWorldMaxFlash, 100);
 	C_ADD_VARIABLE(int, iWorldThirdPersonKey, 0);
 	C_ADD_VARIABLE(bool, bGrenadePred, false);
+	C_ADD_VARIABLE(bool, bDrawFov, false);
 	C_ADD_VARIABLE(float, flWorldThirdPersonOffset, 150.f);
 	C_ADD_VARIABLE_VECTOR(bool, REMOVAL_MAX, vecWorldRemovals, false);
+	C_ADD_VARIABLE(int, iRagdollGravity, 2);
+	C_ADD_VARIABLE(bool, bRagdollGravity, false);
 
 	// on-screen
 	C_ADD_VARIABLE(bool, bScreen, false);
@@ -278,8 +284,8 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bScreenHitMarkerDamage, false);
 	C_ADD_VARIABLE(bool, bScreenHitMarkerSound, false);
 	C_ADD_VARIABLE(bool, bQuake, false);
-	C_ADD_VARIABLE(int, iRagdollGravity, 2);
-	C_ADD_VARIABLE(bool, bRagdollGravity, false);
+	C_ADD_VARIABLE(bool, bSniperCrosshair, false);
+	
 
 	C_ADD_VARIABLE(bool, b180Camera, false);
 	C_ADD_VARIABLE(int, i180camerakey, 0);
@@ -325,6 +331,9 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bMiscPureBypass, true);
 	C_ADD_VARIABLE(bool, bMiscBacktrack, false);
 	C_ADD_VARIABLE(int, iMiscBacktrackTicks, 13);
+	C_ADD_VARIABLE(bool, bClanTag, false);
+	C_ADD_VARIABLE(bool, bClanTagTime, false);
+	
 	#pragma endregion
 
 	#pragma region variables_menu

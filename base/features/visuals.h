@@ -85,6 +85,8 @@ public:
 	/* glow effect on entities like while spectating */
 	void Glow(CBaseEntity* pLocal);
 
+	float RealTimeFov;
+
 private:
 	enum EPaddingDirection : unsigned int
 	{
@@ -133,6 +135,7 @@ private:
 	// Entities
 	/* draw entity bounding box */
 	void Box(const Box_t& box, const int nBoxType, const Color& colPrimary, const Color& colOutline);
+	void DrawFov();
 	/* draw vertical line with health-based height */
 	void HealthBar(Context_t& ctx, const float flFactor, const Color& colPrimary, const Color& colBackground, const Color& colOutline);
 	/* draw horizontal line with ammo-based width */

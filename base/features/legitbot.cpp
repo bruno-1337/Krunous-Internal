@@ -29,8 +29,8 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 	if (W::bMainOpened)
 		return;
 
-
-
+	
+	GetWeaponConfig(pLocal);
 	
 
 	if (C::Get<int>(Vars.iAimKey) > 0 && !IPT::IsKeyDown(C::Get<int>(Vars.iAimKey))) //check for aimkey
@@ -39,6 +39,8 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 	}
 
 	
+	
+
 	FindTarget(pLocal, pCmd);
 
 
@@ -70,10 +72,8 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 	if (m_Target == -1 || weapont->GetAmmo() == 0 || !pLocal->IsAlive())
 		return;
 
-	if (pLocal->GetShotsFired() >= 1 && oneshot == 1)
+	if (pLocal->GetShotsFired() != 0 && oneshot == 1)
 		return;
-
-	GetWeaponConfig(pLocal);
 
 	CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(m_Target);
 	auto Local_Pos = pLocal->GetEyePosition();
@@ -81,13 +81,10 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	if (NBone)
 	{
-		EnemyBonePos = *pEntity->GetBonePosition(get_best_bone(pLocal, pEntity, pCmd));
+		R_Bone = get_best_bone(pLocal, pEntity, pCmd);
 	}
-	else
-	{
-		EnemyBonePos = *pEntity->GetBonePosition(R_Bone);
-	}
-	
+
+	EnemyBonePos = *pEntity->GetBonePosition(R_Bone);
 	auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 	
 	auto CurrentAngle = pCmd->angViewPoint;
@@ -147,15 +144,12 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 		
 		auto Local_Pos = fLocal->GetEyePosition();
 		Vector EnemyBonePos;
-		GetWeaponConfig(fLocal);
 		if (NBone)
 		{
-			EnemyBonePos = *pEntity->GetBonePosition(get_best_bone(fLocal, pEntity, fCmd));
+			R_Bone = get_best_bone(fLocal, pEntity, fCmd);
 		}
-		else
-		{
-			EnemyBonePos = *pEntity->GetBonePosition(R_Bone);
-		}
+
+		EnemyBonePos = *pEntity->GetBonePosition(R_Bone);
 		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 		auto CurrentAngle = fCmd->angViewPoint;
 
@@ -166,7 +160,7 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 			CurrentAngle.y += aimPunch.y * 2.0f;
 		}
 
-		if (C::Get<bool>(Vars.bAimAutoWall) && !fLocal->IsVisible(pEntity, pEntity->GetBonePosition(BONE_HEAD).value_or(pEntity->GetEyePosition(false))))
+		if (C::Get<bool>(Vars.bAimAutoWall) && !fLocal->IsVisible(pEntity, pEntity->GetBonePosition(R_Bone).value_or(pEntity->GetEyePosition(false))))
 		{
 			continue;
 		}
@@ -185,13 +179,10 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 float CLegitBot::CalcFov(QAngle angle, QAngle playerAngle)
 {
 
+	QAngle delta = angle - playerAngle;
+	delta.Normalize();
 
-	float fov = sqrt(pow(angle.x - playerAngle.x, 2) + pow(angle.y - playerAngle.y, 2));
-	if (fov > 180)
-	{
-		return abs(360.f - fov);
-	}
-	return fov;
+	return sqrtf(powf(delta.x, 2.0f) + powf(delta.y, 2.0f));
 }
 
 
@@ -275,6 +266,7 @@ int CLegitBot::get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd
 	{
 	case 1:
 	{
+
 		return BONE_HEAD;
 		break;
 	}
@@ -309,6 +301,7 @@ int CLegitBot::get_best_bone(CBaseEntity* pLocal, CBaseEntity* pEntity, CUserCmd
 		break;
 	}
 	}
+
 }
 
 void CLegitBot::GetWeaponConfig(CBaseEntity* pLocal)
@@ -322,7 +315,7 @@ void CLegitBot::GetWeaponConfig(CBaseEntity* pLocal)
 	CCSWeaponData* pWeaponData = I::WeaponSystem->GetWeaponData(nDefinitionIndex);
 
 	// check is weapon gun
-	if (pWeaponData == nullptr || !pWeaponData->IsGun())
+	if (pWeaponData == nullptr)
 		return;
 
 	
@@ -415,17 +408,17 @@ case WEAPONTYPE_MACHINEGUN:
 	Aim_Bone = C::Get<int>(Vars.iMABone);
 	NBone = C::Get<bool>(Vars.bMAAimNBone);
 	break;
+
 default:
-	Aim_Bone = 7;
 	weapontype = 7;
-	fov = 0;
-	smooth = 0;
-	oneshot = 1;
-	NBone = 0;
+	fov = C::Get<float>(Vars.iAimFov);
+	smooth = C::Get<int>(Vars.iAimSmooth);
+	oneshot = C::Get<bool>(Vars.bOneShot);
+	Aim_Bone = C::Get<int>(Vars.iBone);
+	NBone = C::Get<bool>(Vars.bAimNBone);
 	break;
 }
 SortBone();
-
 
 
 }
@@ -434,17 +427,17 @@ void CLegitBot::SortBone()
 {
 	switch (Aim_Bone)
 	{
-	case 1:
+	case 0:
 	{
 		R_Bone = BONE_HEAD;
 		break;
 	}
-	case 2:
+	case 1:
 	{
 		R_Bone = BONE_NECK;
 		break;
 	}
-	case 3:
+	case 2:
 	{
 		R_Bone = BONE_SPINE_3;
 		break;

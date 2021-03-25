@@ -14,6 +14,20 @@
 
 void CBlockBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal)
 {
+	CBaseEntity* morone = nullptr;
+
+	if (b_Target == -20)
+	{
+		b_Target = FindBlockbot(pLocal, pCmd);
+	}
+
+	morone = I::ClientEntityList->Get<CBaseEntity>(b_Target);
+
+	if (!IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)) || morone == nullptr || !morone->IsAlive() || morone->IsDormant() || b_Target == pLocal->GetIndex())
+	{
+		b_Target = FindBlockbot(pLocal, pCmd);
+	}
+	else
 	switch (C::Get<int>(Vars.iMiscBlockBot))
 	{
 	case 0:
@@ -135,44 +149,27 @@ void CBlockBot::RunOldschool(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	if (IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
 	{
-		float bestdist = 250.f;
-		int index = -1;
+		
 		bool blocked = false;
 
-		for (int i = 0; i < I::Globals->nMaxClients; i++)
-		{
-			CBaseEntity* entity = I::ClientEntityList->Get<CBaseEntity>(i);
-
-			if (!entity)
-				continue;
-
-			if (entity == nullptr || !entity->IsAlive() || entity->IsDormant() || i == pLocal->GetIndex())
-				continue;
-
-			float dist = pLocal->GetOrigin().DistTo(entity->GetOrigin());
-
-			if (dist < bestdist)
-			{
-				bestdist = dist;
-				index = i;
-			}
-		}
-
-		if (index == -1)
+		if (b_Target == -1)
 			return;
 
 		blocked = true;
 		
 
 
-		CBaseEntity* target = I::ClientEntityList->Get<CBaseEntity>(index);
+		CBaseEntity* target = I::ClientEntityList->Get<CBaseEntity>(b_Target);
 
 		if ((pLocal->GetOrigin() - *target->GetBonePosition(BONE_HEAD)).Length() < 43) // head position
 		{
-			Vector targetOrigin = target->GetOrigin() + target->GetVelocity() * 0.45f; //m_vecOrigin
+			Vector targetOrigin = target->GetOrigin() + (target->GetVelocity().Length2D() * I::Globals->flIntervalPerTick);// *0.45f; //m_vecOrigin
+
 			targetOrigin.z = 0;
 
-			Vector localOrigin = target->GetOrigin();
+
+
+			Vector localOrigin = pLocal->GetOrigin();
 			localOrigin.z = 0;
 
 			float distance = (targetOrigin - localOrigin).Length();
@@ -266,4 +263,33 @@ void CBlockBot::MoveC(CUserCmd* pCmd, const QAngle& angOldViewPoint) const
 	pCmd->flForwardMove = std::clamp(x, -flMaxForwardSpeed, flMaxForwardSpeed);
 	pCmd->flSideMove = std::clamp(y, -flMaxSideSpeed, flMaxSideSpeed);
 	pCmd->flUpMove = std::clamp(z, -flMaxUpSpeed, flMaxUpSpeed);
+}
+
+int CBlockBot::FindBlockbot(CBaseEntity* pLocal, CUserCmd* pCmd)
+{
+
+	float bestdist = 250.f;
+	int index = -1;
+
+	for (int i = 0; i < I::Globals->nMaxClients; i++)
+	{
+		CBaseEntity* entity = I::ClientEntityList->Get<CBaseEntity>(i);
+
+		if (!entity)
+			continue;
+
+		if (entity == nullptr || !entity->IsAlive() || entity->IsDormant() || i == pLocal->GetIndex())
+			continue;
+
+		float dist = pLocal->GetOrigin().DistTo(entity->GetOrigin());
+
+		if (dist < bestdist)
+		{
+			bestdist = dist;
+			index = i;
+		}
+	}
+
+	return index;
+
 }

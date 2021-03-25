@@ -321,6 +321,9 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bLegit))
 			CLegitBot::Get().Run(pCmd, pLocal, bSendPacket);
 
+		if (C::Get<int>(Vars.iMiscRCS) != 0)
+			CMiscellaneous::Get().RCS(pCmd, pLocal);
+
 		if (C::Get<bool>(Vars.bTrigger))
 			CTriggerBot::Get().Run(pCmd, pLocal);
 
@@ -336,42 +339,24 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bClanTag))
 		{
 
-				switch (int(I::Globals->flCurrentTime * 2.4) % 30)
+				switch (int(I::Globals->flCurrentTime * 2.4) % 14)
 				{
 				
-				case 0:  U::SendClanTag(XorStr("                  "), XorStr("tiotika")); break;
-				case 1:  U::SendClanTag(XorStr("                 E"), XorStr("tiotika")); break;
-				case 2:  U::SendClanTag(XorStr("                Es"), XorStr("tiotika")); break;
-				case 3:  U::SendClanTag(XorStr("               EsT"), XorStr("tiotika")); break;
-				case 4:  U::SendClanTag(XorStr("              EsTr"), XorStr("tiotika")); break;
-				case 5:  U::SendClanTag(XorStr("             EsTru"), XorStr("tiotika")); break;
-				case 6:  U::SendClanTag(XorStr("            EsTruP"), XorStr("tiotika")); break;
-				case 7:  U::SendClanTag(XorStr("           EsTruPo"), XorStr("tiotika")); break;
-				case 8:  U::SendClanTag(XorStr("          EsTruPo_"), XorStr("tiotika")); break;
-				case 9:  U::SendClanTag(XorStr("         EsTruPo_H"), XorStr("tiotika")); break;
-				case 10: U::SendClanTag(XorStr("        EsTruPo_Ho"), XorStr("tiotika")); break;
-				case 11: U::SendClanTag(XorStr("       EsTruPo_Hoo"), XorStr("tiotika")); break;
-				case 12: U::SendClanTag(XorStr("      EsTruPo_Hook"), XorStr("tiotika")); break;
-				case 13: U::SendClanTag(XorStr("     EsTruPo_Hook "), XorStr("tiotika")); break;
-				case 14: U::SendClanTag(XorStr("    EsTruPo_Hook  "), XorStr("tiotika")); break;
-				case 15: U::SendClanTag(XorStr("   EsTruPo_Hook   "), XorStr("tiotika")); break;
-				case 16: U::SendClanTag(XorStr("  EsTruPo_Hook    "), XorStr("tiotika")); break;
-				case 17: U::SendClanTag(XorStr(" EsTruPo_Hook     "), XorStr("tiotika")); break;
-				case 18: U::SendClanTag(XorStr("EsTruPo_Hook      "), XorStr("tiotika")); break;
-				case 19: U::SendClanTag(XorStr("sTruPo_Hook       "), XorStr("tiotika")); break;
-				case 20: U::SendClanTag(XorStr("TruPo_Hook        "), XorStr("tiotika")); break;
-				case 21: U::SendClanTag(XorStr("ruPo_Hook         "), XorStr("tiotika")); break;
-				case 22: U::SendClanTag(XorStr("uPo_Hook          "), XorStr("tiotika")); break;
-				case 23: U::SendClanTag(XorStr("Po_Hook           "), XorStr("tiotika")); break;
-				case 24: U::SendClanTag(XorStr("o_Hook            "), XorStr("tiotika")); break;
-				case 25: U::SendClanTag(XorStr("_Hook             "), XorStr("tiotika")); break;
-				case 26: U::SendClanTag(XorStr("Hook              "), XorStr("tiotika")); break;
-				case 27: U::SendClanTag(XorStr("ook               "), XorStr("tiotika")); break;
-				case 28: U::SendClanTag(XorStr("ok                "), XorStr("tiotika")); break;
-				case 29: U::SendClanTag(XorStr("k                 "), XorStr("tiotika")); break;
-				case 30: U::SendClanTag(XorStr("                  "), XorStr("tiotika")); break;
-
-				
+				case 0:  U::SendClanTag(XorStr("B"), XorStr("tiotika")); break;
+				case 1:  U::SendClanTag(XorStr("B="), XorStr("tiotika")); break;
+				case 2:  U::SendClanTag(XorStr("B=="), XorStr("tiotika")); break;
+				case 3:  U::SendClanTag(XorStr("B==="), XorStr("tiotika")); break;
+				case 4:  U::SendClanTag(XorStr("B===D"), XorStr("tiotika")); break;
+				case 5:  U::SendClanTag(XorStr("B===D- "), XorStr("tiotika")); break;
+				case 6:  U::SendClanTag(XorStr("B===D-. "), XorStr("tiotika")); break;
+				case 7:  U::SendClanTag(XorStr("B===D-_"), XorStr("tiotika")); break;
+				case 8:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
+				case 9:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
+				case 10:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
+				case 11:  U::SendClanTag(XorStr("kkk gozei fi"), XorStr("tiotika")); break;
+				case 12:  U::SendClanTag(XorStr("kkk gozei fi"), XorStr("tiotika")); break;
+				case 13:  U::SendClanTag(XorStr("EsTruPo_Hook"), XorStr("tiotika")); break;
+				case 14:  U::SendClanTag(XorStr("EsTruPo_Hook"), XorStr("tiotika")); break;
 				}
 		}
 
@@ -379,7 +364,22 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 
 			CBlockBot::Get().Run(pCmd, pLocal);
 
+		if (C::Get<bool>(Vars.b180Camera) && !IPT::IsKeyDown(C::Get<int>(Vars.iBlockBotKey)))
+		{
+			if (pCmd->flForwardMove != 0 || pCmd->flSideMove != 0)
+			{
 
+				pCmd->iButtons |= IN_MOVERIGHT;
+				pCmd->iButtons |= IN_MOVELEFT;
+				pCmd->iButtons |= IN_FORWARD;
+				pCmd->iButtons |= IN_BACK;
+
+
+				pCmd->flSideMove = -pCmd->flSideMove;
+				pCmd->flForwardMove = -pCmd->flForwardMove;
+			}
+
+		}
 			if (pLocal)
 			{
 				static auto weapon_debug_spread_show = I::ConVar->FindVar(XorStr("weapon_debug_spread_show"));
@@ -392,8 +392,10 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 					weapon_debug_spread_show->SetValue(pLocal->IsScoped() || !C::Get<bool>(Vars.bSniperCrosshair) ? 0 : 3);
 				}
 			}
-	}
+		}
 	CPrediction::Get().End(pCmd, pLocal);
+
+	
 
 	if (pLocal->IsAlive())
 		CMiscellaneous::Get().MovementCorrection(pCmd, angOldViewPoint);
@@ -407,7 +409,6 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 	}
 
 	
-
 	
 	
 	if (C::Get<bool>(Vars.bMiscPingSpike) || C::Get<bool>(Vars.bMiscPureBypass))
@@ -810,6 +811,7 @@ void FASTCALL H::hkOverrideView(IClientModeShared* thisptr, int edx, CViewSetup*
 			sexooo.Normalize();
 			sexooo.Clamp();
 			pSetup->angView = sexooo;
+			
 		}
 
 	}

@@ -83,35 +83,38 @@ void W::MainWindow(IDirect3DDevice9* pDevice)
 	#pragma region main_visuals
 	if (!I::Engine->IsTakingScreenshot() && !I::Engine->IsDrawingLoadingImage())
 	{
+		if (C::Get<bool>(Vars.bWaterMark))
+		{
 		ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4(0.f, 0.f, 0.f, 0.03f));
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.f, 0.f, 0.f, 0.03f));
 
 		// hmm, another one watermark
-		ImGui::BeginMainMenuBar();
-		{
-			ImGui::PushFont(F::Verdana);
-			ImGui::Dummy(ImVec2(1, 1));
+			ImGui::BeginMainMenuBar();
+			{
+				ImGui::PushFont(F::Verdana);
+				ImGui::Dummy(ImVec2(1, 1));
 
-			#ifdef _DEBUG
-			ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), XorStr("debug"));
-			#endif
+				#ifdef _DEBUG
+				ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), XorStr("debug"));
+				#endif
 
-			if (strstr(GetCommandLine(), XorStr("-insecure")) != nullptr)
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), XorStr("insecure"));
+				if (strstr(GetCommandLine(), XorStr("-insecure")) != nullptr)
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), XorStr("insecure"));
 
-			if (I::Engine->IsInGame())
-				ImGui::TextColored(G::bSendPacket ? ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : ImVec4(1.0f, 0.0f, 0.0f, 1.0f), XorStr("send packets"));
+				if (I::Engine->IsInGame())
+					ImGui::TextColored(G::bSendPacket ? ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : ImVec4(1.0f, 0.0f, 0.0f, 1.0f), XorStr("send packets"));
 
-			const char* const szName = XorStr("EsTruPo_Hook | " __DATE__);
-			static ImVec2 vecNameSize = ImGui::CalcTextSize(szName);
-			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - vecNameSize.x);
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), szName);
+				const char* const szName = XorStr("EsTruPo_Hook | " __DATE__);
+				static ImVec2 vecNameSize = ImGui::CalcTextSize(szName);
+				ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - vecNameSize.x);
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), szName);
 
-			ImGui::PopFont();
-			ImGui::EndMainMenuBar();
+				ImGui::PopFont();
+				ImGui::EndMainMenuBar();
+			}
+
+			ImGui::PopStyleColor(2);
 		}
-
-		ImGui::PopStyleColor(2);
 	}
 
 	ImDrawList* pBackgroundDrawList = ImGui::GetBackgroundDrawList();
@@ -340,6 +343,7 @@ void T::LegitBot()
 					}
 
 				}
+			ImGui::Checkbox(XorStr("Silent##legitbot"), &C::Get<bool>(Vars.bAimSilent));
 			ImGui::Checkbox(XorStr("Visual Check##legitbot"), &C::Get<bool>(Vars.bAimAutoWall));
 			ImGui::Checkbox(XorStr("Enemy Only##legitbot"), &C::Get<bool>(Vars.iAimTeam));
 			ImGui::PopStyleVar();
@@ -557,7 +561,9 @@ void T::Visuals()
 
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(style.FramePadding.x, -1));
 			ImGui::Checkbox(XorStr("Night mode"), &C::Get<bool>(Vars.bWorldNightMode));
-			ImGui::Checkbox(XorStr("Grenade Prediction"), &C::Get<bool>(Vars.bGrenadePred));
+			//ImGui::Checkbox(XorStr("Grenade Prediction"), &C::Get<bool>(Vars.bGrenadePred));
+			ImGui::Checkbox(XorStr("Watermark"), &C::Get<bool>(Vars.bWaterMark));
+
 
 			ImGui::Checkbox(XorStr("Draw aimbot fov"), &C::Get<bool>(Vars.bDrawFov));
 			ImGui::Checkbox(XorStr("Ragdoll Gravity"), &C::Get<bool>(Vars.bRagdollGravity));
@@ -641,7 +647,7 @@ void T::Miscellaneous()
 			ImGui::HotKey(XorStr("Block bot key"), &C::Get<int>(Vars.iBlockBotKey));
 			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
 			ImGui::Checkbox(XorStr("Auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
-			ImGui::Checkbox(XorStr("RCS"), &C::Get<bool>(Vars.bMiscRCS));
+			ImGui::Combo(XorStr("No Recoil"), &C::Get<int>(Vars.iMiscRCS), XorStr("None\0RCS\0No Recoil\0\0"));
 			ImGui::Checkbox(XorStr("Auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));
 			ImGui::Checkbox(XorStr("No crouch cooldown"), &C::Get<bool>(Vars.bMiscNoCrouchCooldown));
 			ImGui::PopStyleVar();

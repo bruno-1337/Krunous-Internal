@@ -23,9 +23,6 @@ void CMiscellaneous::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 	if (C::Get<bool>(Vars.bMiscBunnyHop))
 		BunnyHop(pCmd, pLocal);
 
-	if (C::Get<bool>(Vars.bMiscRCS))
-		RCS(pCmd, pLocal);
-
 	if (C::Get<bool>(Vars.bMiscAutoStrafe))
 		AutoStrafe(pCmd, pLocal);
 
@@ -193,26 +190,47 @@ void CMiscellaneous::BunnyHop(CUserCmd* pCmd, CBaseEntity* pLocal) const
 }
 void CMiscellaneous::RCS(CUserCmd* pCmd, CBaseEntity* pLocal)
 {
-	/*
-	QAngle aim_punch = pLocal->GetPunch();
-	QAngle v_rcs = pCmd->angViewPoint;
-	
-	if (pLocal->GetShotsFired() > 1) 
+	if (C::Get<bool>(Vars.bLegit))
 	{
-		v_rcs -= (aim_punch - v_old_punch) * 2.0f;
-		
-		v_rcs.Clamp();
-		v_rcs.Normalize();
-
-		pCmd->angViewPoint = v_rcs;
-		I::Engine->SetViewAngles(pCmd->angViewPoint);
-		v_old_punch = aim_punch;
+		C::Get<int>(Vars.iMiscRCS) = 0;
+		return;
 	}
+	
+
+
+	if (C::Get<int>(Vars.iMiscRCS) == 1)
+	{
+		QAngle aim_punch = pLocal->GetPunch();
+		aim_punch.Normalize();
+
+		QAngle v_rcs = pCmd->angViewPoint;
+
+		if (pLocal->GetShotsFired() > 1)
+		{
+			v_rcs -= (aim_punch - v_old_punch) * 2.0f;
+
+			v_rcs.Clamp();
+			v_rcs.Normalize();
+
+			pCmd->angViewPoint = v_rcs;
+			I::Engine->SetViewAngles(pCmd->angViewPoint);
+			v_old_punch = aim_punch;
+		}
+		else
+		{
+			v_old_punch = aim_punch;
+		}
+	}
+
 	else
 	{
-		v_old_punch = aim_punch;
+		QAngle aim_punch = pLocal->GetPunch() * 2.0f;
+		QAngle nextVision = pCmd->angViewPoint - aim_punch;
+
+		nextVision.Clamp();
+		nextVision.Normalize();
+		pCmd->angViewPoint = nextVision;
 	}
-	*/
 }
 
 

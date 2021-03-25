@@ -17,9 +17,9 @@ public:
 	void Run(CUserCmd* pCmd, CBaseEntity* pLocal);
 	bool IsValid(int i);
 	void GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal);
-	int b_Target;
+	int b_Target = -20;
 	float b_Best;
-	void FindBlockbot(CBaseEntity* pLocal, CUserCmd* pCmd);
+	int FindBlockbot(CBaseEntity* pLocal, CUserCmd* pCmd);
 	void DropBBOT();
 	void RunCrosshair(CUserCmd* pCmd, CBaseEntity* pLocal);
 

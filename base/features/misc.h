@@ -20,6 +20,8 @@ public:
 
 	// Extra
 	/* automatic shoot when pressed attack key */
+	void RCS(CUserCmd* pCmd, CBaseEntity* pLocal);
+
 	void AutoPistol(CUserCmd* pCmd, CBaseEntity* pLocal);
 	/* dont send packets for a certain number of ticks */
 	void FakeLag(CBaseEntity* pLocal, bool& bSendPacket);
@@ -27,7 +29,7 @@ private:
 	// Movement
 	/* automatic jump when steps on the ground */
 	void BunnyHop(CUserCmd* pCmd, CBaseEntity* pLocal) const;
-	void RCS(CUserCmd* pCmd, CBaseEntity* pLocal);
+	
 	void Ragdoll(CUserCmd* pCmd, CBaseEntity* pLocal);
 	QAngle v_old_punch;
 	/* strafes on optimal sides for maximum speed in air */

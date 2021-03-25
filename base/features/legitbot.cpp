@@ -30,7 +30,7 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 		return;
 
 	
-	GetWeaponConfig(pLocal);
+	
 	
 
 	if (C::Get<int>(Vars.iAimKey) > 0 && !IPT::IsKeyDown(C::Get<int>(Vars.iAimKey))) //check for aimkey
@@ -40,6 +40,7 @@ void CLegitBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal, bool& bSendPacket)
 
 	
 	
+	GetWeaponConfig(pLocal);
 
 	FindTarget(pLocal, pCmd);
 
@@ -62,7 +63,10 @@ void CLegitBot::SmoothAngleSet(QAngle dest, QAngle orig, CUserCmd* pCmd)
 	orig.Normalize();
 	orig.Clamp();
 	pCmd->angViewPoint = orig;
-	I::Engine->SetViewAngles(pCmd->angViewPoint);
+
+	if (!C::Get<bool>(Vars.bAimSilent))
+		I::Engine->SetViewAngles(pCmd->angViewPoint);
+	
 }
 
 void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
@@ -89,15 +93,12 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 	
 	auto CurrentAngle = pCmd->angViewPoint;
 
-	
-
-	if (pLocal->GetShotsFired() > 1)
-	{
-		QAngle aimPunch = pLocal->GetPunch();
-		EnemyAngle.x -= aimPunch.x * 2.0f;
-		EnemyAngle.y -= aimPunch.y * 2.0f;
-	}
-
+		if (pLocal->GetShotsFired() > 1)
+		{
+			QAngle aimPunch = pLocal->GetPunch();
+			EnemyAngle.x -= aimPunch.x * 2.0f;
+			EnemyAngle.y -= aimPunch.y * 2.0f;
+		}
 	
 
 	if (CLegitBot::CalcFov(EnemyAngle, CurrentAngle) < fov)
@@ -112,7 +113,8 @@ void CLegitBot::GoToTarget(CUserCmd* pCmd, CBaseEntity* pLocal)
 			EnemyAngle.Normalize();
 			EnemyAngle.Clamp();
 			pCmd->angViewPoint = EnemyAngle;
-			I::Engine->SetViewAngles(pCmd->angViewPoint);
+			if (!C::Get<bool>(Vars.bAimSilent))
+				I::Engine->SetViewAngles(pCmd->angViewPoint);
 		}
 	}
 
@@ -153,12 +155,13 @@ void CLegitBot::FindTarget(CBaseEntity* fLocal, CUserCmd* fCmd)
 		auto EnemyAngle = M::CalcAngle(Local_Pos, EnemyBonePos);
 		auto CurrentAngle = fCmd->angViewPoint;
 
-		if (fLocal->GetShotsFired() > 1)
-		{
-			QAngle aimPunch = fLocal->GetPunch();
-			CurrentAngle.x += aimPunch.x * 2.0f;
-			CurrentAngle.y += aimPunch.y * 2.0f;
-		}
+			if (fLocal->GetShotsFired() > 1)
+			{
+				QAngle aimPunch = fLocal->GetPunch();
+				CurrentAngle.x += aimPunch.x * 2.0f;
+				CurrentAngle.y += aimPunch.y * 2.0f;
+			}
+
 
 		if (C::Get<bool>(Vars.bAimAutoWall) && !fLocal->IsVisible(pEntity, pEntity->GetBonePosition(R_Bone).value_or(pEntity->GetEyePosition(false))))
 		{

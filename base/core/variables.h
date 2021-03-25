@@ -161,6 +161,7 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bAimArms, false);
 	C_ADD_VARIABLE(bool, bAimLegs, false);
 	C_ADD_VARIABLE(bool, bAimAutoWall, false);
+	C_ADD_VARIABLE(bool, bAimSilent, false);
 	C_ADD_VARIABLE(bool, iAimTeam, false);
 	C_ADD_VARIABLE(bool, bAimNBone, false);
 
@@ -264,6 +265,7 @@ struct Variables_t
 	// world
 	C_ADD_VARIABLE(bool, bWorld, false);
 	C_ADD_VARIABLE(bool, bWorldNightMode, false);
+	C_ADD_VARIABLE(bool, bWaterMark, true);
 	C_ADD_VARIABLE(int, iWorldMaxFlash, 100);
 	C_ADD_VARIABLE(int, iWorldThirdPersonKey, 0);
 	C_ADD_VARIABLE(bool, bGrenadePred, false);
@@ -302,7 +304,7 @@ struct Variables_t
 	C_ADD_VARIABLE(bool, bMiscBunnyHop, false);
 	C_ADD_VARIABLE(int, iMiscBunnyHopChance, 100);
 	C_ADD_VARIABLE(bool, bMiscAutoStrafe, false);
-	C_ADD_VARIABLE(bool, bMiscRCS, false);
+	C_ADD_VARIABLE(int, iMiscRCS, 0);
 	
 
 	C_ADD_VARIABLE(bool, bMiscFakeLag, false); 

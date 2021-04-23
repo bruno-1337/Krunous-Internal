@@ -309,8 +309,13 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 
 	CPrediction::Get().Start(pCmd, pLocal);
 	{
+
+
 		if (C::Get<bool>(Vars.bMiscAutoPistol))
 			CMiscellaneous::Get().AutoPistol(pCmd, pLocal);
+
+		if (C::Get<bool>(Vars.bMiscBacktrack))
+			CBacktrack::Get().Run(pCmd, pLocal);
 
 		if (C::Get<bool>(Vars.bMiscFakeLag) || C::Get<bool>(Vars.bAntiAim))
 			CMiscellaneous::Get().FakeLag(pLocal, bSendPacket);
@@ -327,8 +332,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bTrigger))
 			CTriggerBot::Get().Run(pCmd, pLocal);
 
-		if (C::Get<bool>(Vars.bMiscBacktrack))
-			CBacktrack::Get().Run(pCmd, pLocal);
+		
 
 		if (C::Get<bool>(Vars.bAntiAim))
 			CAntiAim::Get().UpdateServerAnimations(pCmd, pLocal);
@@ -353,10 +357,10 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 				case 8:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
 				case 9:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
 				case 10:  U::SendClanTag(XorStr("B===D-__"), XorStr("tiotika")); break;
-				case 11:  U::SendClanTag(XorStr("kkk gozei fi"), XorStr("tiotika")); break;
-				case 12:  U::SendClanTag(XorStr("kkk gozei fi"), XorStr("tiotika")); break;
-				case 13:  U::SendClanTag(XorStr("EsTruPo_Hook"), XorStr("tiotika")); break;
-				case 14:  U::SendClanTag(XorStr("EsTruPo_Hook"), XorStr("tiotika")); break;
+				case 11:  U::SendClanTag(XorStr("kkkk gozei fi"), XorStr("tiotika")); break;
+				case 12:  U::SendClanTag(XorStr("kkkk gozei fi"), XorStr("tiotika")); break;
+				case 13:  U::SendClanTag(XorStr("EsTruPo_Hook by nbadaro"), XorStr("tiotika")); break;
+				case 14:  U::SendClanTag(XorStr("EsTruPo_Hook by nbadaro"), XorStr("tiotika")); break;
 				}
 		}
 

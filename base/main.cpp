@@ -121,10 +121,10 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 
 		// show message about successful load in logs and in game console
 		L::PushConsoleColor(FOREGROUND_MAGENTA);
-		L::Print(XorStr("EsTruPo_Hook successfully loaded"));
+		L::Print(XorStr("EsTruPo_Hook by nbadaro successfully loaded"));
 		L::PopConsoleColor();
 		I::GameConsole->Clear();
-		I::ConVar->ConsoleColorPrintf(Color(255, 50, 255, 255), XorStr("EsTruPo_Hook successfully loaded.\nbuild date: %s / %s\n"), __DATE__, __TIME__);
+		I::ConVar->ConsoleColorPrintf(Color(255, 50, 255, 255), XorStr("EsTruPo_Hook by nbadaro successfully loaded.\nbuild date: %s / %s\n"), __DATE__, __TIME__);
 	}
 	catch (const std::exception& ex)
 	{

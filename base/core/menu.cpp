@@ -104,7 +104,7 @@ void W::MainWindow(IDirect3DDevice9* pDevice)
 				if (I::Engine->IsInGame())
 					ImGui::TextColored(G::bSendPacket ? ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : ImVec4(1.0f, 0.0f, 0.0f, 1.0f), XorStr("send packets"));
 
-				const char* const szName = XorStr("EsTruPo_Hook | " __DATE__);
+				const char* const szName = XorStr("EsTruPo_Hook by Krunous | " __DATE__);
 				static ImVec2 vecNameSize = ImGui::CalcTextSize(szName);
 				ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - vecNameSize.x);
 				ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), szName);
@@ -134,7 +134,7 @@ void W::MainWindow(IDirect3DDevice9* pDevice)
 
 		ImGui::SetNextWindowPos(ImVec2(vecScreenSize.x * 0.5f, vecScreenSize.y * 0.5f), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
 		//ImGui::SetNextWindowSize(ImVec2(800, 427), ImGuiCond_Always);
-		ImGui::Begin(XorStr("EsTruPo_Hook"), &bMainOpened, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse);
+		ImGui::Begin(XorStr("EsTruPo_Hook by Krunous"), &bMainOpened, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse);
 		{
 			const ImVec2 vecPosition = ImGui::GetCursorScreenPos();
 			const float flWindowWidth = ImGui::GetWindowWidth();
@@ -643,9 +643,9 @@ void T::Miscellaneous()
 			ImGui::Separator();
 
 			ImGui::Checkbox(XorStr("Fake lag"), &C::Get<bool>(Vars.bMiscFakeLag));
-			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("None\0Crosshair\0Normal\0\0"));
+			ImGui::Combo(XorStr("Block bot"), &C::Get<int>(Vars.iMiscBlockBot), XorStr("None\0Crosshair(doesnt work lol)\0Normal\0\0"));
 			ImGui::HotKey(XorStr("Block bot key"), &C::Get<int>(Vars.iBlockBotKey));
-			ImGui::Checkbox(XorStr("Quake"), &C::Get<bool>(Vars.bQuake));
+			ImGui::Checkbox(XorStr("Quake Sounds"), &C::Get<bool>(Vars.bQuake));
 			ImGui::Checkbox(XorStr("Auto accept"), &C::Get<bool>(Vars.bMiscAutoAccept));
 			ImGui::Combo(XorStr("No Recoil"), &C::Get<int>(Vars.iMiscRCS), XorStr("None\0RCS\0No Recoil\0\0"));
 			ImGui::Checkbox(XorStr("Auto pistol"), &C::Get<bool>(Vars.bMiscAutoPistol));

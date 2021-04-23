@@ -44,6 +44,7 @@ namespace T
 	void Visuals();
 	void Miscellaneous();
 	void SkinChanger();
+	void Credits();
 
 	// Values
 	

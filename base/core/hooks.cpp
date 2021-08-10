@@ -314,8 +314,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		if (C::Get<bool>(Vars.bMiscAutoPistol))
 			CMiscellaneous::Get().AutoPistol(pCmd, pLocal);
 
-		if (C::Get<bool>(Vars.bMiscBacktrack))
-			CBacktrack::Get().Run(pCmd, pLocal);
+		
 
 		if (C::Get<bool>(Vars.bMiscFakeLag) || C::Get<bool>(Vars.bAntiAim))
 			CMiscellaneous::Get().FakeLag(pLocal, bSendPacket);
@@ -399,7 +398,8 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		}
 	CPrediction::Get().End(pCmd, pLocal);
 
-	
+	if (C::Get<bool>(Vars.bMiscBacktrack))
+		CBacktrack::Get().Run(pCmd, pLocal);
 
 	if (pLocal->IsAlive())
 		CMiscellaneous::Get().MovementCorrection(pCmd, angOldViewPoint);
